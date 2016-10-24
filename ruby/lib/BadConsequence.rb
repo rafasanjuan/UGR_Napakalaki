@@ -1,3 +1,5 @@
+#encoding: utf-8
+
 class BadConsequence
   
   attr_reader :text, :levels, :nVisibleTreasures, :nHiddenTreasures, :specificVisibleTreasures, :specificHiddenTreasures, :death
@@ -23,4 +25,9 @@ class BadConsequence
   def self.new_death (aText)
       new( aText, 0, 0, 0, Array.new, Array.new, true )
   end  
+  
+  
+  def to_s
+    "#{@text} Niveles perdidos = #{@levels} Tesoros perdidos #{@nVisibleTreasures} "
+  end
 end
