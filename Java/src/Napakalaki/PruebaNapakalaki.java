@@ -12,7 +12,7 @@ import java.util.Arrays;
  * @author juanjomartin97
  */
 public class PruebaNapakalaki {
-    static TreasureKind tesoro = TreasureKind.ARMOR;
+
     static ArrayList<Monster> monstruos = new ArrayList();
     static ArrayList<Monster> monstruos_validos = new ArrayList();
     static ArrayList<Monster> monstruos_a_imprimir = new ArrayList();
@@ -202,12 +202,12 @@ public class PruebaNapakalaki {
         
         for(int i= 0; tama > i; i++){ //Recorremos el vector
             no_encontrado = true;               
-            monstruo_local= monstruos.get(i);   //Cargamos el monstruo a comprobar
+            monstruo_local= monstruos.get(i);   //Load the monster
             
             if(oculto){
-                if(monstruo_local.Getbc().GetHiddenTreasures() > 0){ //Comprobamos los tesoros ocultos
+                if(monstruo_local.Getbc().GetSpecificHiddenTreasures().size() > 0){ //Check hidden treasures
                     for(int j = 0; j < monstruo_local.Getbc().GetSpecificHiddenTreasures().size() && no_encontrado; j++){
-                        if(tesoro_perdido == monstruo_local.Getbc().GetSpecificHiddenTreasures().get(j)){ //hacer comprobaciones segun el tesoro
+                        if(tesoro_perdido == monstruo_local.Getbc().GetSpecificHiddenTreasures().get(j)){ //Check treasure
                             monstruos_validos.add(monstruo_local);
                             no_encontrado = false;
                         }
@@ -215,7 +215,7 @@ public class PruebaNapakalaki {
                 }
             }
             else{
-                if(monstruo_local.Getbc().GetVisibleTreasures() > 0 && no_encontrado){ //Comprobamos los visibles
+                if(monstruo_local.Getbc().GetSpecificVisibleTreasures().size() > 0 && no_encontrado){ //Check visible treasures
                     for(int j = 0; j < monstruo_local.Getbc().GetSpecificVisibleTreasures().size() && no_encontrado; j++){
                         if(tesoro_perdido == monstruo_local.Getbc().GetSpecificVisibleTreasures().get(j)){ //hacer comprobaciones segun el tesoro
                             monstruos_validos.add(monstruo_local);
@@ -255,8 +255,10 @@ public static void main(String[] args) {
             System.out.println(monstruos_a_imprimir.get(i).GetName());
         }
         
+        TreasureKind tesoro = TreasureKind.ARMOR;
+            
         monstruos_a_imprimir.clear();
-        monstruos_a_imprimir = PerdidaDeTesoro(tesoro, true);
+        monstruos_a_imprimir = PerdidaDeTesoro(tesoro, false);
         System.out.println("\nLos monstruos con perdida de armadura oculta son : ");
         for(int i = 0; i < monstruos_a_imprimir.size(); i++){
             System.out.println(monstruos_a_imprimir.get(i).GetName());
