@@ -16,15 +16,15 @@ class BadConsequence
   end
   
   def self.newLevelNumberOfTreasures (aText, someLevels, someVisibleTreasures, someHiddenTreasures)
-      new(aText, someLevels, someVisibleTreasures, someHiddenTreasures)
+      new(aText,someLevels,someVisibleTreasures,someHiddenTreasures,false,[],[])
   end
     
   def self.newLevelSpecificTreasures (aText, someLevels, someSpecificVisibleTreasures, someSpecificHiddenTreasures)
-      new(aText,someLevels,0, 0, someSpecificVisibleTreasures, someSpecificHiddenTreasures)
+      new(aText,someLevels,0,0,false,someSpecificHiddenTreasures,someSpecificVisibleTreasures)
   end
     
   def self.newDeath (aText)
-      new( aText, 0, 0, 0, Array.new, Array.new, true )
+      new(aText,0,0,0,true,[],[])
   end
   
   def to_s
