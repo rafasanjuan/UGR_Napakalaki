@@ -3,29 +3,29 @@
 class BadConsequence
   
   attr_reader :text, :levels, :nVisibleTreasures, :nHiddenTreasures, :specificVisibleTreasures, :specificHiddenTreasures, :death
+  private_class_method :new
   
-  def initialize(aText, someLevels, someVisibleTreasures, someHiddenTreasures, someSpecificVisibleTreasures, someSpecificHiddenTreasures, death) 
+  def initialize(aText, someLevels, someVisibleTreasures, someHiddenTreasures, someSpecificVisibleTreasures, someSpecificHiddenTreasures, isDeath) 
     @text = aText
     @levels = someLevels
     @nVisibleTreasures = someVisibleTreasures
     @nHiddenTreasures = someHiddenTreasures
     @specificVisibleTreasures = someSpecificVisibleTreasures
     @specificHiddenTreasures = someSpecificHiddenTreasures
-    @death = death
+    @death = isDeath
   end
   
-  def self.new_level_number_of_treasures (aText, someLevels, someVisibleTreasures, someHiddenTreasures)
+  def self.newLevelNumberOfTreasures (aText, someLevels, someVisibleTreasures, someHiddenTreasures)
       new(aText, someLevels, someVisibleTreasures, someHiddenTreasures)
   end
     
-  def self.new_level_specific_treasures (aText, someLevels, someSpecificVisibleTreasures, someSpecificHiddenTreasures)
+  def self.newLevelSpecificTreasures (aText, someLevels, someSpecificVisibleTreasures, someSpecificHiddenTreasures)
       new(aText,someLevels,0, 0, someSpecificVisibleTreasures, someSpecificHiddenTreasures)
   end
     
-  def self.new_death (aText)
+  def self.newDeath (aText)
       new( aText, 0, 0, 0, Array.new, Array.new, true )
-  end  
-  
+  end
   
   def to_s
     "#{@text} Niveles perdidos = #{@levels} Tesoros perdidos #{@nVisibleTreasures} "
