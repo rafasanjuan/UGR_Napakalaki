@@ -4,13 +4,13 @@ class BadConsequence
   
   attr_reader :text, :levels, :nVisibleTreasures, :nHiddenTreasures, :specificVisibleTreasures, :specificHiddenTreasures, :death
   
-  def initialize( text, levels, nVisibleTreasures, nHiddenTreasures, specificVisibleTreasures= Array.new, specificHiddenTreasures= Array.new, death )
-    @text = text
-    @levels = levels
-    @nVisibleTreasures = nVisibleTreasures
-    @nHiddenTreasures = nHiddenTreasures
-    @specificVisibleTreasures = specificVisibleTreasures
-    @specificHiddenTreasures = specificHiddenTreasures
+  def initialize(aText, someLevels, someVisibleTreasures, someHiddenTreasures, someSpecificVisibleTreasures, someSpecificHiddenTreasures, death) 
+    @text = aText
+    @levels = someLevels
+    @nVisibleTreasures = someVisibleTreasures
+    @nHiddenTreasures = someHiddenTreasures
+    @specificVisibleTreasures = someSpecificVisibleTreasures
+    @specificHiddenTreasures = someSpecificHiddenTreasures
     @death = death
   end
   
