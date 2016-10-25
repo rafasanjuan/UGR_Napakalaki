@@ -167,6 +167,29 @@ def GanaNivelSuperiorA (lista_monstruos, level)
 	devolver #return
 end
 
+def MalRolloPerder (lista_monstruos, treasure_kind)
+	devolver = Array.new
+	
+	for i in 0...lista_monstruos.size 
+		if (lista_monstruos[i].bad_consequence.nVisibleTreasures) > 0  then
+      for j in 0...lista_monstruos.bad_consequence.specificVisibleTreasures.size
+        if lista_monstruos.bad_consequence.specificVisibleTreasures[j] == treasure_kind then
+          devolver.push(lista_monstruos[i])
+          puts lista_monstruos[i].name
+        end
+      end
+		end
+    if (lista_monstruos[i].bad_consequence.HiddenTreasures) > 0 then
+        if lista_monstruos.bad_consequence.specificHiddenTreasures[j] == treasure_kind then
+          devolver.push(lista_monstruos[i])
+          puts lista_monstruos[i].name
+        end
+    end
+	end
+	
+	devolver #return
+end
+
 
 
 puts "Lista de monstruos con nivel superior a 10\n"
@@ -177,3 +200,6 @@ PerdidaDeNivel(@@monster)
 
 puts "\nLista de monstruos que implican ganar mas de 1 nivel\n"
 GanaNivelSuperiorA(@@monster, 1)
+
+puts "\nLista de monstruos que tengan un mal rollo que implique perder la armadura\n"
+MalRolloPerder(@@monster, [TreasureKind::ARMOR])
