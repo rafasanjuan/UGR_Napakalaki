@@ -9,6 +9,8 @@ public class Player {
     private int level;
     private boolean dead = true;
     private boolean canISteal = true;
+    private Player enemy;
+    private BadConsequence pendingBadConsequence;
     
     // Constructor
     public Player( String name ) {

@@ -1,8 +1,12 @@
 package Napakalaki;
+import java.util.ArrayList;
 
 public class Napakalaki {
     // SINGLETON
     private static final Napakalaki instance = new Napakalaki();
+    private Player currentPlayer;
+    private ArrayList<Player> players;
+    private Monster currentMonster; 
     
     private Napakalaki() {
         // ISSUE::Implementar
