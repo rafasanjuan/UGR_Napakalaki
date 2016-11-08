@@ -1,29 +1,21 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Napakalaki;
 
-/**
- *
- * @author juanjomartin97
- */
 public class Prize {
     private int levels;
     private int treasures;
     
-    Prize(int lvl, int treasures){
-        set_levels(lvl);
-        set_treasures(treasures);
+    public Prize( int lvl, int treasures ){
+        this.levels = lvl;
+        this.treasures = treasures;
     }
     
-    int get_treasures(){
+    public int getTreasures(){
         return treasures;
     }
-    int get_levels(){
+    public int getLevels(){
         return levels;
     }
+    /*
     void set_treasures(int treasures){
         this.treasures = treasures;
     }
@@ -34,6 +26,5 @@ public class Prize {
     public String toString(){
       return "Treasures = " + Integer.toString(treasures) + "levels = " + Integer.toString(levels);
     }
-    
-    
+    */ 
 }

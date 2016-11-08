@@ -1,43 +1,36 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Napakalaki;
 
-/**
- *
- * @author juanjomartin97
- */
 public class Monster {
     private String name;
     private int combatLevel;
     private Prize prize;
-    private BadConsequence bad_consequence;
+    private BadConsequence badConsequence;
     
-    Monster(String name, int level, BadConsequence bc, Prize prize){
+    public Monster(String name, int level, BadConsequence bc, Prize prize){
         this.name = name;
         this.combatLevel = level;
-        this.bad_consequence = bc;
+        this.badConsequence = bc;
         this.prize = prize;
     }
     
-    String GetName(){
+    public String getName(){
         return name;
     }
     
-    int GetCombatLevel(){
+    public int getCombatLevel(){
         return combatLevel;
     }
-    BadConsequence Getbc(){
-        return bad_consequence;
-    }
-    Prize GetPrize(){
-        return prize;
+    
+    public BadConsequence getBadConsequence(){
+        return badConsequence;
     }
     
+    public int getLevelsGained(){
+        return prize.getLevels();
+    }
+    /*
     public String toString(){
         return "El nombre del monsturo = " + name + "Puntos de nivel = " + Integer.toString(combatLevel) + prize.toString() + bad_consequence.toString();
     }
-    
+    */
 }
