@@ -1,6 +1,7 @@
 package Napakalaki;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class CardDealer {
     // SINGLETON
@@ -25,11 +26,11 @@ public class CardDealer {
     }
     
     private void shuffleTreasures() {
-        // ISSUE::Implementar
+        Collections.shuffle( unusedTreasures );
     }
     
     private void shuffleMonsters() {
-        // ISSUE::Implementar
+        Collections.shuffle( unusedMonsters );
     }
     
     public static CardDealer getInstance() {
@@ -45,10 +46,10 @@ public class CardDealer {
     }
     
     public void giveTreasureBack( Treasure t ) {
-        // ISSUE::Implementar
+        usedTreasures.add( t );
     }
     public void giveMonsterBack( Monster m){
-        // ISSUE::Implementar
+        usedMonsters.add( m );
     }
     public void initCards() {
         // ISSUE::Implementar

@@ -11,6 +11,8 @@ public class Player {
     private boolean canISteal = true;
     private Player enemy;
     private BadConsequence pendingBadConsequence;
+    private ArrayList<TreasureKind> visibleTreasures = new ArrayList();
+    private ArrayList<TreasureKind> hiddenTreasures = new ArrayList();
     
     // Constructor
     public Player( String name ) {
@@ -22,19 +24,21 @@ public class Player {
         return name;
     }
     private void bringToLife() {
-        // ISSUE::Implementar
+        dead = false;
     }
     private int getCombatLevel() {
         return level;
     }
     private void incrementLevels( int l ) {
-        // ISSUE::Implementar
+        if( l > 0 )
+            level += l;
     }
     private void decrementLevels( int l ) {
-        // ISSUE::Implementar
+        if( l > 0 )
+            level -= l;
     }
     private void setPendingBadConsequence( BadConsequence b ) {
-        // ISSUE::Implementar
+        pendingBadConsequence = b;  
     }
     private void applyPrize( Monster m ) {
         // ISSUE::Implementar
@@ -47,13 +51,20 @@ public class Player {
         // ISSUE::Implementar
     }
     private int howManyVisibleTreasures( TreasureKind tKind) {
-        // ISSUE::Implementar
+        int count = 0;
+        
+        for ( int i = 0; i < visibleTreasures.size(); i++ )
+            if ( visibleTreasures.get(i) == tKind )
+                count++;
+        
+        return count;
     }
     private void dieIfNoTreasures() {
-        // ISSUE::Implementar
+        if ( visibleTreasures.isEmpty() && hiddenTreasures.isEmpty() ) 
+            dead = true;
     }
     public boolean isDead() {
-        // ISSUE::Implementar
+        return dead;
     }
     public ArrayList getHiddenTreasures() {
         // ISSUE::Implementar
@@ -74,31 +85,39 @@ public class Player {
         // ISSUE::Implementar
     }
     public boolean validState() {
-        // ISSUE::Implementar
+        boolean state = false;
+        if ( !pendingBadConsequence.isEmpty() && hiddenTreasures.size() < 5 )
+            state = true;
+            
+        return state;
     }
     public void initTreasures() {
         // ISSUE::Implementar
     }
     public int getLevels() {
-        // ISSUE::Implementar
+        return level;
     }
     public Treasure stealTreasure() {
         // ISSUE::Implementar
     }
     public void setEnemy( Player enemy ) {
-        // ISSUE::Implementar
+        this.enemy = enemy;
     }
     private Treasure giveMeATreasure() {
         // ISSUE::Implementar
     }
     public boolean canISteal() {
-        // ISSUE::Implementar
+        return canISteal;
     }
     private boolean canYouGiveMeATreasure() {
-        // ISSUE::Implementar
+        // ¿Los tesoros invisibles pueden ser robados?
+        if ( visibleTreasures.isEmpty() )
+            return false;
+        else
+            return true;
     }
     private void haveStolen() {
-        // ISSUE::Implementar
+        canISteal = false;
     }
     public void discardAllTreasures() {
         // ISSUE::Implementar

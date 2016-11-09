@@ -4,9 +4,7 @@ public class Dice {
     // SINGLETON
     private static final Dice instance = new Dice();
     
-    private Dice() {
-        // ISSUE::Implementar
-    }
+    private Dice() {  }
     
     public static Dice getInstance() {
         return instance;

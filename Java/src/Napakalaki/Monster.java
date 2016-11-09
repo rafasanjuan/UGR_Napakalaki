@@ -9,8 +9,8 @@ public class Monster {
     public Monster(String name, int level, BadConsequence bc, Prize prize){
         this.name = name;
         this.combatLevel = level;
-        this.badConsequence = bc;
         this.prize = prize;
+        this.badConsequence = bc;
     }
     
     public String getName(){
@@ -27,6 +27,10 @@ public class Monster {
     
     public int getLevelsGained(){
         return prize.getLevels();
+    }
+    
+    public int getTreasuresGained() {
+        return prize.getTreasures();
     }
     /*
     public String toString(){

@@ -66,7 +66,14 @@ public class BadConsequence {
     
     /* Otros metodos */ 
     public boolean isEmpty() {
-        // ISSUE::Implementar
+        boolean empty;
+        
+        empty = nVisibleTreasures == 0 && nHiddenTreasures == 0 &&
+                levels == 0 && death == false &&
+                specificHiddenTreasures.isEmpty() &&
+                specificVisibleTreasures.isEmpty();
+        
+        return empty;
     }
     
     public void substractVisibleTreasure( Treasure t ) {
