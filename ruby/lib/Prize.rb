@@ -1,4 +1,4 @@
-#encoding: utf-8
+#encoding: UTF-8
 
 class Prize
   
@@ -9,8 +9,8 @@ class Prize
     @levels = levels
   end
   
-  def to_s
-    "Tesoros ganados: #{@treasures} \n Niveles ganados: #{@level}"
-  end
+  #def to_s
+  #  "Tesoros ganados: #{@treasures} \n Niveles ganados: #{@level}"
+  #end
   
 end

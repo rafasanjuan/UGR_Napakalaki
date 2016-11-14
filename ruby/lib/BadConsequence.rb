@@ -1,10 +1,15 @@
-#encoding: utf-8
+#encoding: UTF-8
 
 class BadConsequence
   
-  attr_reader :text, :levels, :nVisibleTreasures, :nHiddenTreasures, :specificVisibleTreasures, :specificHiddenTreasures, :death
-  private_class_method :new
+  MAXTREASURES = 10
   
+  #attr_accesor
+  attr_reader :levels, :nVisibleTreasures, :nHiddenTreasures, :specificVisibleTreasures, :specificHiddenTreasures
+  #attr_writer 
+  private :new
+  
+  # Constructores
   def initialize(aText, someLevels, someVisibleTreasures, someHiddenTreasures, someSpecificVisibleTreasures, someSpecificHiddenTreasures, isDeath) 
     @text = aText
     @levels = someLevels
@@ -23,11 +28,28 @@ class BadConsequence
       new(aText,someLevels,0,0,false,someSpecificHiddenTreasures,someSpecificVisibleTreasures)
   end
     
+  # Metodos
   def self.newDeath (aText)
       new(aText,0,0,0,true,[],[])
   end
   
-  def to_s
-    "#{@text} Niveles perdidos = #{@levels} Tesoros perdidos #{@nVisibleTreasures} "
+  #def to_s
+  #  "#{@text} Niveles perdidos = #{@levels} Tesoros perdidos #{@nVisibleTreasures} "
+  #end
+  
+  def isEmpty
+    # ISSUE::Implementar
+  end
+  
+  def substractVisibleTreasure( t )
+    # ISSUE::Implementar
+  end
+  
+  def substractHiddenTreasure( t )
+    # ISSUE::Implementar
+  end
+  
+  def adjustToFitTreasureLists( v, h )
+    # ISSUE::Implementar
   end
 end
