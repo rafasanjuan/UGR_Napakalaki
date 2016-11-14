@@ -2,63 +2,71 @@
 
 class Player
   
-  # name: get
-  # level: get
+  attr_reader :name, :level, :dead, :canISteal, :hiddenTreasures, :visibleTreasures 
+  attr_writer :pendingBadConsequence, :enemy
+  #attr_accesor 
   
-  attr_accesor :name, :level, :dead, :canISteal, :enemy, :hiddenTreasures, :visibleTreasures
+  private_class_method :bringToLife, :incrementLevels, :decrementLevels
+  private_class_method :applyPrize, :applyBadConsquence, :canMakeTreasureVisible
+  private_class_method :dieIfNoTreasures, :howManyVisibleTreasures, :giveMeATreasure
+  private_class_method :canYouGiveMeATreasure, :haveStolen
   
   def initialize( name )
-    # ISSUE:Implementar
+    @name = name
+    @level = 0
+    @dead = true
+    @canISteal = true
+    @visibleTreasures = Array.new
+    @hiddenTreasures = Array.new
+    @pendingBadConsequence = BadConsequence.newLevelNumberOfTreasures( "", 0, 0, 0 )
   end
   
   def bringToLife
     dead = false
   end
-  private :bringToLife
 
   def incrementLevels( l )
-    # ISSUE::Implementar
+    if l > 0
+      incrementLevels = incrementLevels + l
+    end
   end
-  private :incrementLevels
   
   def decrementLevels( l )
-    # ISSUE::Implementar
+    if l > 0
+      incrementLevels = incrementLevels - l
+    end
   end
-  private :decrementLevels
-  
-  def setPendingBadConsequence( b )
-    # ISSUE::Implementar
-  end
-  private :setPendingBadConsequence
   
   def applyPrize( m )
     # ISSUE::Implementar
   end
-  private :applyPrize
   
   def applyBadConsequence( m )
     # ISSUE::Implementar
   end
-  private :applyBadConsquence
   
   def canMakeTreasureVisible( t )
     # ISSUE::Implementar
   end
-  private :canMakeTreasureVisible
   
   def howManyVisibleTreasures( tKind )
-    # ISSUE::Implementar
+    numero_de_tesoros = 0
+    
+    for i in 0...visibleTreasures.size
+      if i.type == tKind
+        numero_de_tesoros = numero_de_tesoros + 1
+      end
+    end
+    
+    numero_de_tesoros
   end
-  private :howManyVisibleTreasures
   
   def dieIfNoTreasures
-    # ISSUE::Implementar
+    if @visibleTreasures.empty? && @hiddenTreasures.empty?
+      @dead = true
+    end
   end
-  private :dieIfNoTreasures
   
-  def isDead
-    # ISSUE::Implementar
-  end
   def getHiddenTreasures
     # ISSUE::Implementar
   end
@@ -84,7 +92,13 @@ class Player
   end
   
   def validState
-    # ISSUE::Implementar
+    estado_valido = false
+        
+    if @pendingBadConsequence.isEmpty && @hiddenTreasures.size <= 4
+      estado_valido = true
+    end
+        
+    estado_valido 
   end
   
   def initTreasures
@@ -106,24 +120,16 @@ class Player
   def giveMeATreasure
     # ISSUE::Implementar
   end
-  private :giveMeATreasure
-  
-  def canISteal
-    # ISSUE::Implementar
-  end
   
   def canYouGiveMeATreasure
-    # ISSUE::Implementar
+    puede = true
+    if @visibleTreasures.empty?
+      puede = false
+    end
+    puede
   end
-  private :canYouGiveMeATreasure
-  
-  def haveStolen
-    # ISSUE::Implementar
-  end
-  private :haveStolen
-  
+
   def discardAllTreasures
     # ISSUE::Implementar
   end
-
 end

@@ -38,7 +38,11 @@ class BadConsequence
   #end
   
   def isEmpty
-    # ISSUE::Implementar
+    vacio = false
+    if nVisibleTreasures == 0 and nHiddenTreasures == 0 and levels == 0 and death == false and specificHiddenTreasures.empty? and specificVisibleTreasures.empty?
+      vacio = true
+    end
+    vacio
   end
   
   def substractVisibleTreasure( t )

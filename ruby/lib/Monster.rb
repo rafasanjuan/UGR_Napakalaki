@@ -8,7 +8,7 @@ class Monster
      @bad_consequence = bc
   end
   
-  def to_s
-    "El nombre del monstruo = #{@name} Puntos de nivel = #{@combatLevel}"
-  end
+  #def to_s
+  #  "El nombre del monstruo = #{@name} Puntos de nivel = #{@combatLevel}"
+  #end
 end

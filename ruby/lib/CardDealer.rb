@@ -17,11 +17,11 @@ class CardDealer
  private :initMonsterCardDeck
  
   def shuffleTreasures
-    # ISSUE::Implementar
+    unusedTreasures.shuffle!
   end
   
   def shuffleMonsters
-    # ISSUE::Implementar
+    unusedMonsters.shuffle!
   end
 
   def nextTreasure
@@ -33,11 +33,11 @@ class CardDealer
   end
   
   def giveTreasureBack( t )
-    # ISSUE::Implementar
+    usedTreasures << t
   end
 
   def giveMonsterBack( m )
-    # ISSUE::Implementar
+    usedTreasures << m
   end
   
   def initCards
