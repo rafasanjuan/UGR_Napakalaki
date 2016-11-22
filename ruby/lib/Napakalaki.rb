@@ -7,22 +7,52 @@ class Napakalaki
   attr_accesor :currentPlayer, :players, :dealer, :currentMonster
   
   def initPlayers( names )
-    # ISSUE::Implementar.
+    for i in 0...names.size 
+      players << Player( names[i] )
+    end
   end
   private :initPlayers
   
   def nextPlayer
-    # ISSUE::Implementar.
+    # Si nunca se ha inizializado entonces empieza cualquier jugador 
+    # aleatoriamente.
+    if @currentPlayer == nil then
+      @currentPlayer == players[ rand( 0...(players.size - 1) ) ]
+    # De lo contrario hay dos opciones
+    else
+      # Que sea el ultimo jugador de la lista, por lo que empieza por el primero
+      # de nuevo.
+      if ( @currentPlayer == players.size )
+        @currentPlayer = players[0]
+      # Que no sea el ultimo por lo que salta al siguiente.
+      else
+        @currentPlayer = players[ @currentPlayer + 1 ]
+      end
+    end
+    @currentPlayer
   end
   private :nextPlayer
   
   def nextTurnAllowed
-    # ISSUE::Implementar.
+    if @current_player == nil then
+        permitido = true
+    else
+        permitido = @current_player.validState
+    end
+    permitido
   end
   private :nextTurnAllowed
   
   def setEnemies
-    # ISSUE::Implementar.
+    for i in 0...players.size
+      enemy << rand( 0...(players.size-1) )
+      # Hasta que no genere un numero aleatorio que no coincida con su indice
+      # no sigue adelante.
+      while i == enemy do
+        enemy << rand( 0...(players.size-1) )
+      end
+      players[i].enemy << players[i]
+    end
   end
   private :setEnemies
   
@@ -46,16 +76,10 @@ class Napakalaki
     # ISSUE::Implementar.
   end
   
-  def getCurrentPlayer
-    # ISSUE::Implementar.
-  end
-  def getCurrentMonster
-    # ISSUE::Implementar.
-  end
   def nextTurn
     # ISSUE::Implementar.
   end
   def endOfGame( result )
-    # ISSUE::Implementar.
+    result == WINGAME
   end
 end
