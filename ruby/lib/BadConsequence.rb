@@ -46,11 +46,23 @@ class BadConsequence
   end
   
   def substractVisibleTreasure( t )
-    # ISSUE::Implementar
+    borrado = false
+    for i in 0...@specificVisibleTreasures.size 
+      if @specificVisibleTreasure[i] == t and borrado == false then
+        @specificVisibleTreasure.delete( i )
+        borrado = true
+      end
+    end
   end
   
   def substractHiddenTreasure( t )
-    # ISSUE::Implementar
+    borrado = false
+    for i in 0...@specificHiddenTreasures.size 
+      if @specificHiddenTreasures[i] == t and borrado == false then
+        @specificHiddenTreasures.delete( i )
+        borrado = true
+      end
+    end
   end
   
   def adjustToFitTreasureLists( v, h )
