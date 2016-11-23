@@ -49,15 +49,21 @@ class Player
     resultado = true
     cuantos_del_mismo_tipo << howManyVisibleTreasures( t )
     
-    if t.type != ONEHAND
+    if t.type != ONEHAND then
       if cuantos_del_mismo_tipo > 0
         resultado = false
       end
-      if t.type == BOTHHAND
+      else
+        if t.type == BOTHHAND then
         tesoro = new.Treasure( aux, 0, ONEHAND )
+        cuantos_de_una_mano << howManyVisibleTreasures( tesoro )
+          if cuantos_de_una_mano > 0 then
+            resultado = false
+          end
+        end
       end
     else
-      if cuantos_del_mismo_tipo > 1
+      if cuantos_del_mismo_tipo > 1 then
         resultado = false
       end
     end
