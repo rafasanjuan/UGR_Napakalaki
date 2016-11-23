@@ -46,14 +46,30 @@ class Player
   end
   
   def canMakeTreasureVisible( t )
-    # ISSUE::Implementar
+    resultado = true
+    cuantos_del_mismo_tipo << howManyVisibleTreasures( t )
+    
+    if t.type != ONEHAND
+      if cuantos_del_mismo_tipo > 0
+        resultado = false
+      end
+      if t.type == BOTHHAND
+        tesoro = new.Treasure( aux, 0, ONEHAND )
+      end
+    else
+      if cuantos_del_mismo_tipo > 1
+        resultado = false
+      end
+    end
+      
+    resultado
   end
   
   def howManyVisibleTreasures( tKind )
     numero_de_tesoros = 0
     
-    for i in 0...visibleTreasures.size
-      if i.type == tKind
+    for i in 0...@visibleTreasures.size
+      if @visibleTreasures[i].type == tKind
         numero_de_tesoros = numero_de_tesoros + 1
       end
     end
@@ -92,6 +108,8 @@ class Player
   end
   
   def validState
+    # ISSUE::Comprobar que los tesoros que lleva el jugador al equiparselos
+    # estan en un estado valido.
     estado_valido = false
         
     if @pendingBadConsequence.isEmpty && @hiddenTreasures.size <= 4
@@ -117,8 +135,9 @@ class Player
     # ISSUE::Implementar
   end
   
+  # Devuelve un tesoro oculto al azar.
   def giveMeATreasure
-    # ISSUE::Implementar
+    @hiddenTreasures[ random( 0...@hiddenTreasures.size ) ]
   end
   
   def canYouGiveMeATreasure
