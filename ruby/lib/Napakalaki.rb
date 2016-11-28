@@ -80,8 +80,20 @@ class Napakalaki
   end
   
   def nextTurn
-    # ISSUE::Implementar.
+    stateOK = nextTurnAllowed
+    
+    if stateOK then
+      currentMonster = dealer.nextMonster
+      currentPlayer = nextPlayer
+      dead = currentPlayer.dead
+   
+      if dead then
+        currentPlayer.initTreasures
+      end
+    end
+    stateOK
   end
+  
   def endOfGame( result )
     result == WINGAME
   end
