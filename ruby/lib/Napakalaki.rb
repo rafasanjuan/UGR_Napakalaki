@@ -63,12 +63,15 @@ class Napakalaki
   def discardVisibleTreasures( treasures )
     for i in 0..treasures.size
       currentPlayer.discartVisibleTreasure( treasure[i] )
-      giveThreasureBack( treasure[i] )
+      dealer.giveThreasureBack( treasure[i] )
     end
   end
   
   def discardHiddenTreasures( treasures )
-    # ISSUE::Implementar.
+    for i in 0..treasures.size
+      currentPlayer.discartHiddenTreasure( treasure[i] )
+      dealer.giveThreasureBack( treasure[i] )
+    end
   end
   
   def makeTreasuresVisible( treasures )
