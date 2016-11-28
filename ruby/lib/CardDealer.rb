@@ -71,7 +71,8 @@ class CardDealer
   end
   
   def initCards
-    # ISSUE::Implementar
+    initTreasureCardDeck
+    initMonsterCardDeck
   end
 
 end

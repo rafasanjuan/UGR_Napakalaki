@@ -73,7 +73,10 @@ class Napakalaki
   end
   
   def initGame( players )
-    # ISSUE::Implementar.
+    initPlayers( players )
+    setEnemies
+    nextTurn
+    dealer.initCards
   end
   
   def nextTurn
