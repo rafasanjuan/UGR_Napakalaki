@@ -103,7 +103,11 @@ class Player
   end
   
   def discardVisibleTreasure( t )
-    # ISSUE::Implementar
+    visibleTreasures.remove( t )
+    if pendingBadConsequence == null and !pendingBadConsequence.isEmpty()
+      pendingBadConsequence.substractVisibleTreasure( t )
+    end
+    currentPlayer.dieIfNoTreasures
   end
   
   def discardHiddenTreasure( t )

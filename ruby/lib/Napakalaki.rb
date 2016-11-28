@@ -61,7 +61,10 @@ class Napakalaki
   end
   
   def discardVisibleTreasures( treasures )
-    # ISSUE::Implementar.
+    for i in 0..treasures.size
+      currentPlayer.discartVisibleTreasure( treasure[i] )
+      giveThreasureBack( treasure[i] )
+    end
   end
   
   def discardHiddenTreasures( treasures )
