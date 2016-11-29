@@ -51,7 +51,11 @@ class Player
   end
   
   def applyBadConsequence( m )
-    # ISSUE::Implementar
+    badConsequence = m.getBadConsequence
+    nLevels = getLevels
+    decrementLevels( nLevels )
+    
+    @pendingBadConsequence = badConsequence.adjustToFitTreasureLists( @visibleTreasures, @hiddenTreasures )
   end
   
   def canMakeTreasureVisible( t )
