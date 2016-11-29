@@ -66,6 +66,20 @@ class BadConsequence
   end
   
   def adjustToFitTreasureLists( v, h )
+    t_visible = Array.new
+    t_hidden  = Array.new
     
+    for i in 0..v.size
+      if t_visible.index( v[i].type ) == nil then
+        t_visible << v[i].type
+      end
+    end
+    for j in 0..h.size
+        if t_hidden.index( h[j].type ) == nil then
+          t_hidden << h[j].type
+        end
+    end
+
+    bs = BadConsequence.newLevelSpecificTreasures( @text, 0, t_visible, t_hidden )
   end
 end
