@@ -8,6 +8,13 @@ class Monster
      @bad_consequence = bc
   end
   
+  def getLevelsGained
+    @prize.levels
+  end
+  
+  def getTreasuresGained
+    @prize.treasures
+  end
   #def to_s
   #  "El nombre del monstruo = #{@name} Puntos de nivel = #{@combatLevel}"
   #end

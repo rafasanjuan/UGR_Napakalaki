@@ -38,7 +38,16 @@ class Player
   end
   
   def applyPrize( m )
-    # ISSUE::Implementar
+    nLevels = m.getLevelsGained
+    incrementLevels( nLevels )
+    
+    nTreasures = m.getTreasuresGained
+    if nTreasures > 0 then
+      for i in 0..nTreasures
+        treasure = CardDealer.nextTreasure
+        add( treasure )
+      end
+    end
   end
   
   def applyBadConsequence( m )

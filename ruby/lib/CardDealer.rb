@@ -51,15 +51,15 @@ class CardDealer
       # Las borramos del mazo de usadas
       @unusedMonsters.clear
       # Y barajamos el mazo
-      shuffleTreasures
+      shuffleMonsters
     # Si quedan cartas
     else
       # ISSUE::El guion no clarifica si hay que meter aqui la carta en el
       # mazo de cartas de monstruos usadas.
-      siguiente_tesoro << @unusedMonsters[ @unusedMonsters.size-1 ]
+      siguiente_monstruo << @unusedMonsters[ @unusedMonsters.size-1 ]
       @unusedMonsters.delete( @unusedMonsters.size-1 )
     end
-    siguiente_tesoro
+    siguiente_monstruo
   end
   
   def giveTreasureBack( t )
