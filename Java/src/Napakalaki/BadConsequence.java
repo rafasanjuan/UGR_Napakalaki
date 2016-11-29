@@ -77,11 +77,17 @@ public class BadConsequence {
     }
     
     public void substractVisibleTreasure( Treasure t ) {
-        // ISSUE::Implementar
+        if(nVisibleTreasures == 0)
+            specificVisibleTreasures.remove(t.getType());
+        else
+            nVisibleTreasures--;
     }
     
     public void substractHiddenTreasure( Treasure t ) {
-        // ISSUE::Implementar
+        if(nHiddenTreasures == 0)
+            specificHiddenTreasures.remove(t.getType());
+        else
+            nHiddenTreasures--;
     }
     
     public String toString(){

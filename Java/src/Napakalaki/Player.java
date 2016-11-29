@@ -11,8 +11,8 @@ public class Player {
     private boolean canISteal = true;
     private Player enemy;
     private BadConsequence pendingBadConsequence;
-    private ArrayList<TreasureKind> visibleTreasures = new ArrayList();
-    private ArrayList<TreasureKind> hiddenTreasures = new ArrayList();
+    private final ArrayList<Treasure> visibleTreasures = new ArrayList();
+    private final ArrayList<Treasure> hiddenTreasures = new ArrayList();
     
     // Constructor
     public Player( String name ) {
@@ -48,13 +48,36 @@ public class Player {
     }
     
     private boolean canMakeTreasureVisible( Treasure t ) {
-        // ISSUE::Implementar
+        boolean canmakeVisible = true;
+        int nmanos = 0;
+        if(hiddenTreasures.contains(t)){
+            for(int i=0; i < visibleTreasures.size() && canmakeVisible; i++){
+                if(visibleTreasures.get(i).getType() != TreasureKind.ONEHAND){
+                    if(visibleTreasures.get(i).getType() == t.getType()){
+                        canmakeVisible = false;
+                    }
+                }
+                else{
+                    nmanos++;
+                    if(t.getType() == TreasureKind.BOTHHANDS)
+                        canmakeVisible = false;
+                }
+                if(nmanos == 2 && t.getType() == TreasureKind.ONEHAND)
+                    canmakeVisible = false;
+                if(visibleTreasures.get(i).getType() == TreasureKind.BOTHHANDS && t.getType() == TreasureKind.ONEHAND)
+                    canmakeVisible = false;
+            }
+        }
+        else{
+            canmakeVisible = false;
+        }
+    return canmakeVisible;    
     }
     private int howManyVisibleTreasures( TreasureKind tKind) {
         int count = 0;
         
         for ( int i = 0; i < visibleTreasures.size(); i++ )
-            if ( visibleTreasures.get(i) == tKind )
+            if ( visibleTreasures.get(i).getType() == tKind )
                 count++;
         
         return count;
@@ -104,7 +127,8 @@ public class Player {
         this.enemy = enemy;
     }
     private Treasure giveMeATreasure() {
-        // ISSUE::Implementar
+        int numeroAleatorio = (int) ( Math.random() * hiddenTreasures.size() + 1 );
+        return hiddenTreasures.get(numeroAleatorio);
     }
     public boolean canISteal() {
         return canISteal;

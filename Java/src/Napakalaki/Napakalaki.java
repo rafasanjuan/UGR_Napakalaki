@@ -13,21 +13,44 @@ public class Napakalaki {
     }
     
     private void initPlayers( String names[] ){
-        // ISSUE::Implementar
+        int i;
+        for(i= 0; i < names.length ; i++){
+            Player local= new Player(names[i]);
+            players.add(local);
+        }
+        
     }
     private Player nextPlayer(){
-        // ISSUE::Implementar
+        int numeroAleatorio = (int) ( Math.random() % players.size() );
+        Player local;
+        if(currentPlayer == null){
+            local = players.get(numeroAleatorio);
+        }
+        else{
+            local = players.get(players.indexOf(currentPlayer) + 1);
+            
+        }
+    return local;
     }
     private boolean nextTurnAllowed(){
-        // ISSUE::Implementar
+        boolean valido = true;
+        if(currentPlayer != null && currentPlayer.validState() == false){
+            valido = false;
+        }
+    return valido;
     }
     private void setEnemies(){
-        // ISSUE::Implementar
+        Player enemy;
+        do{
+        int numeroAleatorio = (int) ( Math.random() * players.size() + 1 );
+        enemy = players.get(numeroAleatorio);
+        }while(enemy == currentPlayer);
+        currentPlayer.setEnemy(enemy);
     }
     public static Napakalaki getInstance() {
         return instance;
     }
-    public CombatResult developCombat(){
+    /*public CombatResult developCombat(){
         // ISSUE::Implementar
     }
     public void discardVisibleTreasures( Treasure treasures[] ) {
@@ -43,16 +66,19 @@ public class Napakalaki {
         // ISSUE::Implementar
     }
     public Player getCurrentPlayer() {
-        // ISSUE::Implementar
+        return currentPlayer;
     }
     public Monster getCurrentMonster() {
-        // ISSUE::Implementar
+        return currentMonster;
     }
     public boolean nextTurn() {
         // ISSUE::Implementar
-    }
-    public boolean endOfGame( CombatResult relult ) {
-        // ISSUE::Implementar
+    }*/
+    public boolean endOfGame( CombatResult result ) {
+        boolean endofgame = false;
+        if(result == CombatResult.WINGAME)
+            endofgame = true;
+    return endofgame;
     }
     
 }
