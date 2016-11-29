@@ -166,7 +166,10 @@ class Player
   end
   
   def initTreasures
-    # ISSUE::Implementar
+    bringToLife
+    
+    treasure = CardDealer.nextTreasure
+    @hiddenTreasures.add( treasure )
   end
   
   def getLevels
