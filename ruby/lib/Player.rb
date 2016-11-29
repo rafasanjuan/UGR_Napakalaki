@@ -95,7 +95,25 @@ class Player
   end
   
   def combat( m )
-    # ISSUE::Implementar
+    # ISSUE::No es seguro que funcione, todavia es un esquema.
+    myLevel = @level
+    monsterLevel = currentMonster.level
+    
+    if !@canISteal then
+      number = Dice.nextNumber
+      if number < 3 then
+        enemyLevel = enemy.level
+        monsterLevel = monsterLevel + enemyLevel
+      end
+    end
+    
+    if myLevel > monsterLevel then
+      applyPrice( m )
+    else
+      applyBadConsequence( m )
+    end
+    
+    combatResult
   end
   
   def makeTreasureVisible( t )

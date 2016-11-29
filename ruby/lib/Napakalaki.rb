@@ -57,7 +57,7 @@ class Napakalaki
   private :setEnemies
   
   def developCombat
-    # ISSUE::Implementar.
+    currentPlayer.combat( currentMonster )
   end
   
   def discardVisibleTreasures( treasures )
