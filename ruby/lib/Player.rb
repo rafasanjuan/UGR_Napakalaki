@@ -170,6 +170,18 @@ class Player
     
     treasure = CardDealer.nextTreasure
     @hiddenTreasures.add( treasure )
+    
+    number = Dice.nextNumber
+    
+    if number > 1 then
+      treasure = CardDealer.nextTreasure
+      @hiddenTreasures.add( treasure )
+    end
+    
+    if number == 6 then
+      treasure = CardDealer.nextTreasure
+      @hiddenTreasures.add( treasure )
+    end
   end
   
   def getLevels

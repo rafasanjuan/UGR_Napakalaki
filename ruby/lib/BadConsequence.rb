@@ -66,6 +66,6 @@ class BadConsequence
   end
   
   def adjustToFitTreasureLists( v, h )
-    # ISSUE::Implementar
+    
   end
 end
