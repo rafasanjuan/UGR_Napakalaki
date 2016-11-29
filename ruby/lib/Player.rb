@@ -174,7 +174,15 @@ class Player
   end
   
   def stealTreasure
-    # ISSUE::Implementar
+    canI = canISteal
+    if canI then
+      enemy.canYou = canYouGiveMeATreasure
+      if canYou then
+        treasure = enemy.giveMeATreasure
+        hiddenTreasures.add( treasure )
+        haveStolen
+      end
+    end
   end
   
   def setEnemy( enemy )
