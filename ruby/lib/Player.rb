@@ -203,6 +203,11 @@ class Player
   end
 
   def discardAllTreasures
-    # ISSUE::Implementar
+    for i in 0..@visibleTreasures.size
+      discardVisibleTreasure( @visibleTreasures[i] )
+    end
+    for i in 0..@hiddenTreasures.size
+      discardVisibleTreasure( @hiddenTreasures[i] )
+    end
   end
 end
