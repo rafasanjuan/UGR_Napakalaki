@@ -117,7 +117,11 @@ class Player
   end
   
   def makeTreasureVisible( t )
-    # ISSUE::Implementar
+    canI = canMakeTreasureVisible
+    if canI then
+      visibleTreasures.add( t )
+      hiddenTreasures.remove( t )
+    end
   end
   
   def discardVisibleTreasure( t )
