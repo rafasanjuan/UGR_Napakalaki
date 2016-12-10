@@ -1,9 +1,15 @@
 #encoding: UTF-8
 
-class Dice
+module NapakalakiGame
+  
   require "singleton"
   
-  def nextNumber
-    rand( 1...7 )
+  class Dice
+    include Singleton
+
+    def nextNumber
+      rand( 1...7 )
+    end
   end
+  
 end

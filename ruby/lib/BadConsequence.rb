@@ -1,5 +1,8 @@
 #encoding: UTF-8
 
+require_relative 'TreasureKind'
+
+module NapakalakiGame
 class BadConsequence
   
   MAXTREASURES = 10
@@ -7,7 +10,7 @@ class BadConsequence
   #attr_accesor
   attr_reader :levels, :nVisibleTreasures, :nHiddenTreasures, :specificVisibleTreasures, :specificHiddenTreasures
   #attr_writer 
-  private :new
+  private_class_method :new
   
   # Constructores
   def initialize(aText, someLevels, someVisibleTreasures, someHiddenTreasures, someSpecificVisibleTreasures, someSpecificHiddenTreasures, isDeath) 
@@ -82,4 +85,5 @@ class BadConsequence
 
     bs = BadConsequence.newLevelSpecificTreasures( @text, 0, t_visible, t_hidden )
   end
+end
 end

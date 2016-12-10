@@ -1,14 +1,32 @@
 #encoding: UTF-8
 
+require "singleton"
+require_relative "BadConsequence"
+require_relative "CardDealer"
+require_relative "CombatResult"
+require_relative "Dice"
+require_relative "Monster"
+require_relative "Player"
+require_relative "Prize"
+require_relative "Treasure"
+require_relative "TreasureKind"
+
+module NapakalakiGame
 class Napakalaki
   
-  require "singleton"
-  
-  attr_accesor :currentPlayer, :players, :dealer, :currentMonster
+  include Singleton
+  attr_accessor :currentPlayer, :players, :dealer, :currentMonster
+    
+  def initialize
+    @currentPlayer = 0
+    @currentMonster = Monster.new
+  end
   
   def initPlayers( names )
-    for i in 0...names.size 
-      players << Player( names[i] )
+    @dealer = CardDealer.instance
+    @players = Array.new
+    names.each do |name|
+      players << Player.new( name )
     end
   end
   private :initPlayers
@@ -43,18 +61,35 @@ class Napakalaki
   end
   private :nextTurnAllowed
   
+=begin
   def setEnemies
-    for i in 0...players.size
-      enemy << rand( 0...(players.size-1) )
+    id_enemigo = -1
+    for i in 0..@players.size
+      id_enemigo << rand( 0..(@players.size-1) )
       # Hasta que no genere un numero aleatorio que no coincida con su indice
       # no sigue adelante.
-      while i == enemy do
-        enemy << rand( 0...(players.size-1) )
+      while i == id_enemigo do
+        id_enemigo << rand( 0...(@players.size-1) )
       end
-      players[i].enemy << players[i]
+      @players[i].enemy = @players[id_enemigo]
     end
   end
   private :setEnemies
+=end
+  def setEnemies
+    no_asignado = true
+    
+    for i in 0..@players.length-1
+      while no_asignado
+        aleatorio = rand(@players.length)
+        if(aleatorio != i)
+          @players[i].enemy = @players[aleatorio]
+          no_asignado = false
+        end
+      end
+      no_asignado = true
+    end
+  end
   
   def developCombat
     currentPlayer.combat( currentMonster )
@@ -84,19 +119,19 @@ class Napakalaki
     initPlayers( players )
     setEnemies
     nextTurn
-    dealer.initCards
+    @dealer.initCards
   end
   
   def nextTurn
     stateOK = nextTurnAllowed
     
     if stateOK then
-      currentMonster = dealer.nextMonster
-      currentPlayer = nextPlayer
-      dead = currentPlayer.dead
+      @currentMonster = @dealer.nextMonster
+      @currentPlayer = nextPlayer
+      dead = @currentPlayer.dead
    
       if dead then
-        currentPlayer.initTreasures
+        @currentPlayer.initTreasures
       end
     end
     stateOK
@@ -105,4 +140,6 @@ class Napakalaki
   def endOfGame( result )
     result == WINGAME
   end
+end
+
 end

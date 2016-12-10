@@ -1,5 +1,6 @@
 #encoding: UTF-8
 
+module NapakalakiGame
 class Treasure
   
   attr_reader :name, :bonus, :type
@@ -9,4 +10,5 @@ class Treasure
     @bonus = aBonus
     @type = t
   end
+end
 end

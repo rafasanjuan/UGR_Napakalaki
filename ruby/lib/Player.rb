@@ -1,15 +1,21 @@
 #encoding: UTF-8
 
+
+require_relative "BadConsequence"
+require_relative "CardDealer"
+require_relative "CombatResult"
+require_relative "Dice"
+require_relative "Monster"
+require_relative "Prize"
+require_relative "Treasure"
+require_relative "TreasureKind"
+
+module NapakalakiGame
 class Player
   
   attr_reader :name, :level, :dead, :canISteal, :hiddenTreasures, :visibleTreasures 
   attr_writer :pendingBadConsequence, :enemy
   #attr_accesor 
-  
-  private_class_method :bringToLife, :incrementLevels, :decrementLevels
-  private_class_method :applyPrize, :applyBadConsquence, :canMakeTreasureVisible
-  private_class_method :dieIfNoTreasures, :howManyVisibleTreasures, :giveMeATreasure
-  private_class_method :canYouGiveMeATreasure, :haveStolen
   
   def initialize( name )
     @name = name
@@ -21,21 +27,32 @@ class Player
     @pendingBadConsequence = BadConsequence.newLevelNumberOfTreasures( "", 0, 0, 0 )
   end
   
-  def bringToLife
-    dead = false
+  def getHiddenTreasures
+    @hiddenTreasures
   end
+  
+  def getVisibleTreasures
+    @visibleTreasures
+  end
+  
+  def bringToLife
+    @dead = false
+  end
+  private :bringToLife
 
   def incrementLevels( l )
     if l > 0
       incrementLevels = incrementLevels + l
     end
   end
+  private :incrementLevels
   
   def decrementLevels( l )
     if l > 0
       incrementLevels = incrementLevels - l
     end
   end
+  private :decrementLevels
   
   def applyPrize( m )
     nLevels = m.getLevelsGained
@@ -49,6 +66,7 @@ class Player
       end
     end
   end
+  private :applyPrize
   
   def applyBadConsequence( m )
     badConsequence = m.getBadConsequence
@@ -57,6 +75,7 @@ class Player
     
     @pendingBadConsequence = badConsequence.adjustToFitTreasureLists( @visibleTreasures, @hiddenTreasures )
   end
+  private :applyBadConsequence
   
   def canMakeTreasureVisible( t )
     resultado = true
@@ -80,6 +99,7 @@ class Player
       
     resultado
   end
+  private :canMakeTreasureVisible
   
   def howManyVisibleTreasures( tKind )
     numero_de_tesoros = 0
@@ -92,20 +112,14 @@ class Player
     
     numero_de_tesoros
   end
+  :howManyVisibleTreasures
   
   def dieIfNoTreasures
     if @visibleTreasures.empty? && @hiddenTreasures.empty?
       @dead = true
     end
   end
-  
-  def getHiddenTreasures
-    # ISSUE::Implementar
-  end
-  
-  def getVisibleTreasures()
-    # ISSUE::Implementar
-  end
+  private :dieIfNoTreasures
   
   def combat( m )
     # ISSUE::No es seguro que funcione, todavia es un esquema.
@@ -113,7 +127,7 @@ class Player
     monsterLevel = currentMonster.level
     
     if !@canISteal then
-      number = Dice.nextNumber
+      number = @dice.nextNumber
       if number < 3 then
         enemyLevel = enemy.level
         monsterLevel = monsterLevel + enemyLevel
@@ -168,24 +182,23 @@ class Player
   def initTreasures
     bringToLife
     
-    treasure = CardDealer.nextTreasure
-    @hiddenTreasures.add( treasure )
+    dealer = CardDealer.instance
+    dice = Dice.instance
     
-    number = Dice.nextNumber
+    treasure = dealer.nextTreasure
+    @hiddenTreasures << treasure
+    
+    number = dice.nextNumber
     
     if number > 1 then
-      treasure = CardDealer.nextTreasure
-      @hiddenTreasures.add( treasure )
+      treasure = dealer.nextTreasure
+      @hiddenTreasures << treasure
     end
     
     if number == 6 then
-      treasure = CardDealer.nextTreasure
-      @hiddenTreasures.add( treasure )
+      treasure = dealer.nextTreasure
+      @hiddenTreasures << treasure
     end
-  end
-  
-  def getLevels
-    # ISSUE::Implementar
   end
   
   def stealTreasure
@@ -195,19 +208,16 @@ class Player
       if canYou then
         treasure = enemy.giveMeATreasure
         hiddenTreasures.add( treasure )
-        haveStolen
+        canISteal = false
       end
     end
-  end
-  
-  def setEnemy( enemy )
-    # ISSUE::Implementar
   end
   
   # Devuelve un tesoro oculto al azar.
   def giveMeATreasure
     @hiddenTreasures[ random( 0...@hiddenTreasures.size ) ]
   end
+  private :giveMeATreasure
   
   def canYouGiveMeATreasure
     puede = true
@@ -216,6 +226,7 @@ class Player
     end
     puede
   end
+  private :canYouGiveMeATreasure
 
   def discardAllTreasures
     for i in 0..@visibleTreasures.size
@@ -225,4 +236,5 @@ class Player
       discardVisibleTreasure( @hiddenTreasures[i] )
     end
   end
+end
 end

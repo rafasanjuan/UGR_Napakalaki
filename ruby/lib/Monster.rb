@@ -1,7 +1,10 @@
+#encoding: UTF-8
+
+module NapakalakiGame
 class Monster
   attr_reader :name, :combatLevel, :prize, :bad_consequence
   
-  def initialize( aName,combatLvl, aPrize,bc )
+  def initialize( aName = 0,combatLvl = 0, aPrize = 0, bc = 0 )
      @name = aName
      @combatLevel = combatLvl
      @prize = aPrize
@@ -18,4 +21,5 @@ class Monster
   #def to_s
   #  "El nombre del monstruo = #{@name} Puntos de nivel = #{@combatLevel}"
   #end
+end
 end

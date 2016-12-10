@@ -1,6 +1,7 @@
 # Examen practica 1.
-#encoding: utf-8
+#encoding: UTF-8
 
+module NapakalakiGame
 class Leprechaun
 
   attr_reader :name
@@ -36,4 +37,5 @@ class Leprechaun
     end
   end
   
+end
 end

@@ -1,5 +1,6 @@
 #encoding: UTF-8
 
+module NapakalakiGame
 class Prize
   
   attr_reader :treasures, :levels
@@ -13,4 +14,5 @@ class Prize
   #  "Tesoros ganados: #{@treasures} \n Niveles ganados: #{@level}"
   #end
   
+end
 end
