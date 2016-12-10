@@ -1,11 +1,10 @@
-#encoding: UTF-8
+#encoding: utf-8
 
 require_relative 'BadConsequence.rb'
 require_relative 'TreasureKind.rb'
 require_relative 'Prize.rb'
 require_relative 'Monster.rb'
 
-module NapakalakiGame
 
 
 @@monster = Array.new()
@@ -204,5 +203,3 @@ GanaNivelSuperiorA(@@monster, 1)
 
 puts "\nLista de monstruos que tengan un mal rollo que implique perder la armadura\n"
 MalRolloPerder(@@monster, [TreasureKind::ARMOR])
-
-end
