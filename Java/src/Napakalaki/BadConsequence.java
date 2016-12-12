@@ -3,7 +3,7 @@ import java.util.ArrayList;
 
 public class BadConsequence {
     /* Atributos */
-    private static int MAXTREASURES = 10;
+    protected static int MAXTREASURES = 10;
     private String text = "";
     private int levels;
     private int nVisibleTreasures;
@@ -94,7 +94,32 @@ public class BadConsequence {
         return text + " Niveles perdidos = " + Integer.toString(levels) + " Tesoros perdidos" + Integer.toString(nVisibleTreasures) + ListaTesoros();
     }
     
-    public BadConsequence adjustToFitTreasureLists ( Treasure v[], Treasure h[]) {
-        // ISSUE::Implementar
+    public BadConsequence adjustToFitTreasureLists ( ArrayList<Treasure> v, ArrayList<Treasure> h) { //comprobar cabecera
+        BadConsequence local_bc = new BadConsequence("",false);
+        
+        if(nVisibleTreasures > 0 || nHiddenTreasures > 0){
+            if(nVisibleTreasures < v.size())
+                local_bc.nVisibleTreasures = nVisibleTreasures;
+            else
+                local_bc.nVisibleTreasures = v.size();
+            
+            if(nHiddenTreasures < h.size())
+                local_bc.nHiddenTreasures = nHiddenTreasures;
+            else
+                local_bc.nHiddenTreasures = h.size();
+        }
+        else if(specificVisibleTreasures.size() > 0 || specificHiddenTreasures.size() > 0){
+            for (Treasure v_treasure : v) {
+                if(specificVisibleTreasures.contains(v_treasure.getType()))
+                    local_bc.specificVisibleTreasures.add(v_treasure.getType());
+            }
+            for (Treasure h_treasure : h) {
+                if(specificHiddenTreasures.contains(h_treasure.getType()))
+                    local_bc.specificHiddenTreasures.add(h_treasure.getType());
+            }
+        }
+    return local_bc;
     }
+
+  
 }

@@ -292,7 +292,18 @@ public class CardDealer {
     }
     
     public Monster nextMonster(){
-        // ISSUE::Implementar
+        Monster local_monster = null;
+        if(!unusedMonsters.isEmpty()){
+            local_monster = unusedMonsters.get(0);
+            usedMonsters.add(local_monster);
+            unusedMonsters.remove(0);
+        }
+        else{
+            unusedMonsters = usedMonsters;
+            this.shuffleMonsters();
+            usedMonsters.clear();
+        }
+    return local_monster;
     }
     
     public void giveTreasureBack(Treasure t){
@@ -302,35 +313,9 @@ public class CardDealer {
     public void giveMonsterBack(Monster m){
         usedMonsters.add(m);
     }
-    }
     
-    private void shuffleTreasures() {
-        Collections.shuffle( unusedTreasures );
-    }
-    
-    private void shuffleMonsters() {
-        Collections.shuffle( unusedMonsters );
-    }
-    
-    public static CardDealer getInstance() {
-        return instance;
-    }
-    
-    public Treasure nextTreasure() {
-        // ISSUE::Implementar
-    }
-          
-    public Monster nextMonster() {
-        // ISSUE::Implementar
-    }
-    
-    public void giveTreasureBack( Treasure t ) {
-        usedTreasures.add( t );
-    }
-    public void giveMonsterBack( Monster m){
-        usedMonsters.add( m );
-    }
     public void initCards() {
-        // ISSUE::Implementar
+        this.initTreasureCardDeck();
+        this.initMonsterCardDeck();
     }
 }

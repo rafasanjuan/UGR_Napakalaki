@@ -50,20 +50,37 @@ public class Napakalaki {
     public static Napakalaki getInstance() {
         return instance;
     }
-    /*public CombatResult developCombat(){
-        // ISSUE::Implementar
+    public CombatResult developCombat(){
+        CombatResult combat = currentPlayer.combat(currentMonster);
+        CardDealer.getInstance().giveMonsterBack(currentMonster);
+        return combat;
     }
     public void discardVisibleTreasures( Treasure treasures[] ) {
-        // ISSUE::Implementar
+        for (Treasure treasure : treasures) {
+            //treasure = next(): Treasure (discardVisibleTreasures.pdf)
+            currentPlayer.discardVisibleTreasure(treasure);
+            CardDealer.getInstance().giveTreasureBack(treasure);
+        }
     }
     public void discardHiddenTreasures( Treasure treasures[] ) {
-        // ISSUE::Implementar
+        for(Treasure treasure : treasures){
+           //treasure = next(): Treasure (discardVisibleTreasures.pdf)
+           currentPlayer.discardHiddenTreasure(treasure);
+           CardDealer.getInstance().giveTreasureBack(treasure);
+        } 
     }
+    
     public void makeTreasuresVisible( Treasure treasures[] ) {
-        // ISSUE::Implementar
+        //t = next():Treasure(makeTreasuresVisible.pdf)
+        for(Treasure treasure : treasures)
+            currentPlayer.makeTreasureVisible(treasure);
     }
+    
     public void initGame( String players[] ) {
-        // ISSUE::Implementar
+        this.initPlayers(players);
+        this.setEnemies();
+        CardDealer.getInstance().initCards();
+        this.nextTurn();
     }
     public Player getCurrentPlayer() {
         return currentPlayer;
@@ -72,13 +89,21 @@ public class Napakalaki {
         return currentMonster;
     }
     public boolean nextTurn() {
-        // ISSUE::Implementar
-    }*/
+        boolean stateOK = this.nextTurnAllowed();
+        if(stateOK){
+            currentMonster = CardDealer.getInstance().nextMonster();
+            this.currentPlayer = this.nextPlayer();
+            if(currentPlayer.isDead()){
+                currentPlayer.initTreasures();
+            }
+        }
+    return stateOK;
+    }
     public boolean endOfGame( CombatResult result ) {
         boolean endofgame = false;
         if(result == CombatResult.WINGAME)
             endofgame = true;
-    return endofgame;
+        return endofgame;
     }
     
 }
