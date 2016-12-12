@@ -13,6 +13,7 @@ require_relative "TreasureKind"
 module NapakalakiGame
   class Player
 
+    @@MAXLEVEL = 10
     attr_reader :name, :level, :dead, :canISteal, :hiddenTreasures, :visibleTreasures 
     attr_writer :pendingBadConsequence, :enemy
 
@@ -40,15 +41,15 @@ module NapakalakiGame
     private :bringToLife
 
     def incrementLevels( l )
-      if l > 0
-        incrementLevels = incrementLevels + l
-      end
+      @level = @level + l
     end
     private :incrementLevels
 
     def decrementLevels( l )
-      if l > 0
-        incrementLevels = incrementLevels - l
+      @level = @level - l
+        
+      if @level < 1
+        @level = 1
       end
     end
     private :decrementLevels
@@ -66,8 +67,8 @@ module NapakalakiGame
     private :applyPrize
 
     def applyBadConsequence( m )
-      badConsequence = m.getBadConsequence
-      nLevels = getLevels
+      badConsequence = m.badConsequence
+      nLevels = m.getLevelsGained
       decrementLevels( nLevels )
 
       @pendingBadConsequence = badConsequence.adjustToFitTreasureLists( @visibleTreasures, @hiddenTreasures )
@@ -76,24 +77,27 @@ module NapakalakiGame
 
     def canMakeTreasureVisible( t )
       resultado = true
-      cuantos_del_mismo_tipo = howManyVisibleTreasures( t )
-
+      cuantos_del_mismo_tipo = howManyVisibleTreasures( t.type )
+=begin
+      # Los tesoros de una mano y dos manos son especiales.
       if t.type != TreasureKind::ONEHAND then
-        if cuantos_del_mismo_tipo > 0
+        if cuantos_del_mismo_tipo > 2
           resultado = false
         elsif t.type == TreasureKind::BOTHHANDS then
-          tesoro = new.Treasure( aux, 0, TreasureKind::ONEHAND )
+          tesoro = Treasure.new( "aux", 0, TreasureKind::ONEHAND )
           cuantos_de_una_mano = howManyVisibleTreasures( tesoro )
             if cuantos_de_una_mano > 0 then
               resultado = false
             end
         end
+      # El resto no puede aparecer mas de una vez.
       else
         if cuantos_del_mismo_tipo > 1 then
           resultado = false
         end
       end
-
+=end
+      puts "jiji"
       resultado
     end
     private :canMakeTreasureVisible
@@ -120,23 +124,28 @@ module NapakalakiGame
 
     def combat( m )
       # ISSUE::No es seguro que funcione, todavia es un esquema.
-      @currentMonster = m
       
-      myLevel = @level
-      monsterLevel = @currentMonster.combatLevel
+      myLevel = getCombatLevel
+      monsterLevel = m.combatLevel
 
       if !@canISteal then
         number = @dice.nextNumber
         if number < 3 then
-          enemyLevel = @enemy.level
+          enemyLevel = @enemy.getCombatLevel
           monsterLevel = monsterLevel + enemyLevel
         end
       end
 
       if myLevel > monsterLevel then
-        applyPrice( m )
+        applyPrize( m )
+        if @level >= @@MAXLEVEL
+          combatResult = CombatResult::WINGAME
+        else
+          combatResult = CombatResult::WIN
+        end
       else
         applyBadConsequence( m )
+        combatResult = CombatResult::LOSE
       end
 
       combatResult
@@ -145,14 +154,14 @@ module NapakalakiGame
     def makeTreasureVisible( t )
       canI = canMakeTreasureVisible( t )
       if canI then
-        @visibleTreasures.add( t )
-        @hiddenTreasures.remove( t )
+        @visibleTreasures << t
+        @hiddenTreasures.delete( t )
       end
     end
 
     def discardVisibleTreasure( t )
       @visibleTreasures.remove( t )
-      if @pendingBadConsequence == null and !@pendingBadConsequence.isEmpty()
+      if @pendingBadConsequence == null && !@pendingBadConsequence.isEmpty()
         @pendingBadConsequence.substractVisibleTreasure( t )
       end
       @currentPlayer.dieIfNoTreasures
@@ -160,7 +169,7 @@ module NapakalakiGame
 
     def discardHiddenTreasure( t )
       @hiddenTreasures.remove( t )
-      if @pendingBadConsequence == null and !@pendingBadConsequence.isEmpty()
+      if @pendingBadConsequence == null && !@pendingBadConsequence.isEmpty()
         @pendingBadConsequence.substractHiddenTreasure( t )
       end
       @currentPlayer.dieIfNoTreasures
@@ -225,7 +234,7 @@ module NapakalakiGame
       end
       puede
     end
-    private :canYouGiveMeATreasure
+    #private :canYouGiveMeATreasure
 
     def discardAllTreasures
       @visibleTreasures.each do |x|
@@ -238,6 +247,16 @@ module NapakalakiGame
 
     def to_s
       @name
+    end
+    
+    def getCombatLevel
+      nivel = @level
+      
+      @visibleTreasures.each do |x|
+        nivel = nivel + x.bonus
+      end
+      
+      nivel
     end
   end
 end

@@ -30,7 +30,7 @@ module NapakalakiGame
       @usedTreasures  = Array.new
 
       @unusedTreasures.push Treasure.new('¡Si mi amo!', 4, TreasureKind::HELMET)
-      @unusedTreasures.push Treasure.new('Botas de investigacion', 3, TreasureKind::SHOE)
+      @unusedTreasures.push Treasure.new('Botas de investigacion', 3, TreasureKind::SHOES)
       @unusedTreasures.push Treasure.new('Capucha de Cthulhu', 3, TreasureKind::HELMET)
       @unusedTreasures.push Treasure.new('A prueba de babas', 2, TreasureKind::ARMOR)
       @unusedTreasures.push Treasure.new('Botas de lluvia acida', 1, TreasureKind::BOTHHANDS)
@@ -59,8 +59,7 @@ module NapakalakiGame
       @unusedTreasures.push Treasure.new('Shogulador', 1, TreasureKind::BOTHHANDS)
       @unusedTreasures.push Treasure.new('Varita de atizamiento', 3, TreasureKind::ONEHAND)
       @unusedTreasures.push Treasure.new('Tentáculo de pega', 2, TreasureKind::HELMET)
-      @unusedTreasures.push Treasure.new('Zapato deja-amigos', 1, TreasureKind::SHOE)
-      shuffleTreasures
+      @unusedTreasures.push Treasure.new('Zapato deja-amigos', 1, TreasureKind::SHOES)
     end
     private :initTreasureCardDeck
 
@@ -81,7 +80,7 @@ module NapakalakiGame
 
       # Monstruo 3 -> El sopor de dunwich
       prize = Prize.new(1, 1)
-      bad_consequence = BadConsequence.newLevelSpecificTreasures('Pierdes tu armadura visible y otra oculta.', 0, [TreasureKind::SHOE], Array.new)
+      bad_consequence = BadConsequence.newLevelSpecificTreasures('Pierdes tu armadura visible y otra oculta.', 0, [TreasureKind::SHOES], Array.new)
       @unusedMonsters<< Monster.new('El sopor de dunwich', 2, prize, bad_consequence)
 
       # Monstruo 4 -> DEMONIOS DE MAGALUF
@@ -163,8 +162,7 @@ module NapakalakiGame
       prize = Prize.new(2, 1)
       bad_consequence = BadConsequence.newLevelSpecificTreasures('Te faltan manos para tanta cabeza. Pierdes 3 niveles y tus tesoros visibles de las manos.', 3, [TreasureKind::ONEHAND], [TreasureKind::BOTHHANDS])
       @unusedMonsters<< Monster.new('Bicefalo', 21, prize, bad_consequence)
-
-      shuffleMonsters
+      
     end
     private :initMonsterCardDeck
 
@@ -185,14 +183,11 @@ module NapakalakiGame
         @usedTreasures.clear
         # Y barajamos el mazo
         shuffleTreasures
-      # Si quedan cartas
-      else
-        siguiente_tesoro = Treasure.new
-        # ISSUE::El guion no clarifica si hay que meter aqui la carta en el
-        # mazo de cartas usadas.
-        siguiente_tesoro << @unusedTreasures[ @unusedTreasures.size-1 ]
-        @unusedTreasures.delete( @unusedTreasures.size-1 )
       end
+      
+      siguiente_tesoro = @unusedTreasures[ @unusedTreasures.size-1 ]
+      @unusedTreasures.delete_at( @unusedTreasures.size-1 )
+
       siguiente_tesoro
     end
 
@@ -206,12 +201,11 @@ module NapakalakiGame
         # Y barajamos el mazo
         shuffleMonsters
       # Si quedan cartas
-      else
-        # ISSUE::El guion no clarifica si hay que meter aqui la carta en el
-        # mazo de cartas de monstruos usadas.
-        siguiente_monstruo = @unusedMonsters[ @unusedMonsters.size-1 ]
-        @unusedMonsters.delete( @unusedMonsters.size-1 )
       end
+      
+      siguiente_monstruo = @unusedMonsters[ @unusedMonsters.size-1 ]
+      @unusedMonsters.delete( @unusedMonsters.size-1 )
+        
       siguiente_monstruo
     end
 
@@ -226,6 +220,8 @@ module NapakalakiGame
     def initCards
       initTreasureCardDeck
       initMonsterCardDeck
+      shuffleTreasures
+      shuffleMonsters
     end
 
   end

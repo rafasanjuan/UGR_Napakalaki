@@ -1,11 +1,11 @@
 #encoding: UTF-8
 
-require_relative 'TreasureKind'
+require_relative "TreasureKind"
 
 module NapakalakiGame
   class BadConsequence
 
-    MAXTREASURES = 10
+    @@MAXTREASURES = 10
 
     private_class_method :new
     attr_reader :levels, :nVisibleTreasures, :nHiddenTreasures, :specificVisibleTreasures, :specificHiddenTreasures
@@ -40,7 +40,7 @@ module NapakalakiGame
 
     def isEmpty
       vacio = false
-      if nVisibleTreasures == 0 and nHiddenTreasures == 0 and levels == 0 and death == false and specificHiddenTreasures.empty? and specificVisibleTreasures.empty? then
+      if @nVisibleTreasures == 0 && @nHiddenTreasures == 0 && @levels == 0 && @dead == false && @specificHiddenTreasures.empty? && @specificVisibleTreasures.empty? then
         vacio = true
       end
       vacio
@@ -49,7 +49,7 @@ module NapakalakiGame
     def substractVisibleTreasure( t )
       borrado = false
       for i in 0...( @specificVisibleTreasures.size - 1 )
-        if @specificVisibleTreasure[i] == t and borrado == false then
+        if @specificVisibleTreasure[i] == t && borrado == false then
           @specificVisibleTreasure.delete( i )
           borrado = true
         end
@@ -59,7 +59,7 @@ module NapakalakiGame
     def substractHiddenTreasure( t )
       borrado = false
       for i in 0...( @specificVisibleTreasures.size - 1 )
-        if @specificHiddenTreasures[i] == t and borrado == false then
+        if @specificHiddenTreasures[i] == t && borrado == false then
           @specificHiddenTreasures.delete( i )
           borrado = true
         end

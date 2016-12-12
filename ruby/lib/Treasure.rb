@@ -10,5 +10,9 @@ module NapakalakiGame
       @bonus = aBonus
       @type = t
     end
+    
+    def to_s
+      "#{@name}. Bonus: #{@bonus}. Tipo: #{@type}."
+    end
   end
 end

@@ -1,12 +1,13 @@
 #encoding: UTF-8
 
-module TreasureKind
+module NapakalakiGame
   
+  module TreasureKind
     ARMOR =     :ARMOR
     ONEHAND =   :ONEHAND
-    BOTHHAND =  :BOTHHAND
+    BOTHHANDS =  :BOTHHANDS
     HELMET =    :HELMET
-    SHOE =      :SHOE
+    SHOES =      :SHOES
     NECKLACE =  :NECKLACE
-  
+  end
 end

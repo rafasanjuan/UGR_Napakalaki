@@ -19,17 +19,15 @@ module NapakalakiGame
     attr_accessor :currentPlayer, :players, :dealer, :currentMonster
 
     def initialize
-      @currentPlayer = Player.new( "" )
-      premio = Prize.new( 0,0 )
-      bc = BadConsequence.newLevelNumberOfTreasures( "", 0, 0, 0 )
-      @currentMonster = Monster.new( 0, 0, premio, bc )
+      @currentPlayer = nil
+      @currentMonster = nil
+      @players = Array.new
+      @dealer = CardDealer.instance
     end
 
     def initPlayers( names )
-      @dealer = CardDealer.instance
-      @players = Array.new
       names.each do |name|
-        players << Player.new( name )
+        @players << Player.new( name )
       end
     end
     private :initPlayers
@@ -74,7 +72,7 @@ module NapakalakiGame
         enemigo = rand( @players.size )
         # Hasta que no genere un numero aleatorio que no coincida con su indice
         # no sigue adelante.
-        while i != enemigo do
+        while i == enemigo do
           enemigo = rand( @players.size )
         end
         @players[i].enemy = @players[ enemigo ]
@@ -83,20 +81,23 @@ module NapakalakiGame
     private :setEnemies
 
     def developCombat
-      @currentPlayer.combat( @currentMonster )
+      resultado = @currentPlayer.combat( @currentMonster )
+      @dealer.giveMonsterBack( @currentMonster )
+      
+      resultado
     end
 
     def discardVisibleTreasures( treasures )
       for i in 0..( treasures.size - 1 )
-        @currentPlayer.discartVisibleTreasure( treasures[i] )
-        @dealer.giveThreasureBack( treasures[i] )
+        @currentPlayer.discardVisibleTreasure( treasures[i] )
+        @dealer.giveTreasureBack( treasures[i] )
       end
     end
 
     def discardHiddenTreasures( treasures )
       for i in 0..( treasures.size - 1 )
-        @currentPlayer.discartHiddenTreasure( treasures[i] )
-        @dealer.giveThreasureBack( treasures[i] )
+        @currentPlayer.discardHiddenTreasure( treasures[i] )
+        @dealer.giveTreasureBack( treasures[i] )
       end
     end
 
@@ -109,8 +110,8 @@ module NapakalakiGame
     def initGame( players )
       initPlayers( players )
       setEnemies
-      nextTurn
       @dealer.initCards
+      nextTurn
     end
 
     def nextTurn
