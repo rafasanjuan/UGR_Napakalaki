@@ -1,5 +1,5 @@
 package Napakalaki;
-import java.util.ArrayList;
+import java.util.*;
 
 public class Napakalaki {
     // SINGLETON
@@ -9,14 +9,13 @@ public class Napakalaki {
     private Monster currentMonster; 
     
     private Napakalaki() {
-        // ISSUE::Implementar
+        players = new ArrayList();
     }
     
-    private void initPlayers( String names[] ){
-        int i;
-        for(i= 0; i < names.length ; i++){
-            Player local= new Player(names[i]);
-            players.add(local);
+    private void initPlayers( ArrayList<String> names ){
+    
+        for(int i= 0; i < names.size() ; i++){
+            players.add( new Player(names.get(i)) );
         }
         
     }
@@ -40,12 +39,16 @@ public class Napakalaki {
     return valido;
     }
     private void setEnemies(){
-        Player enemy;
-        do{
-        int numeroAleatorio = (int) ( Math.random() * players.size() + 1 );
-        enemy = players.get(numeroAleatorio);
-        }while(enemy == currentPlayer);
-        currentPlayer.setEnemy(enemy);
+        for (int i = 0; i < players.size(); i++){
+            int actual;
+            
+            do {
+                Random enemigo = new Random();
+                actual = enemigo.nextInt(players.size());
+            }while(actual == i);
+            
+            players.get(i).setEnemy( players.get(actual) );
+        }
     }
     public static Napakalaki getInstance() {
         return instance;
@@ -55,14 +58,14 @@ public class Napakalaki {
         CardDealer.getInstance().giveMonsterBack(currentMonster);
         return combat;
     }
-    public void discardVisibleTreasures( Treasure treasures[] ) {
+    public void discardVisibleTreasures( ArrayList<Treasure> treasures ) {
         for (Treasure treasure : treasures) {
             //treasure = next(): Treasure (discardVisibleTreasures.pdf)
             currentPlayer.discardVisibleTreasure(treasure);
             CardDealer.getInstance().giveTreasureBack(treasure);
         }
     }
-    public void discardHiddenTreasures( Treasure treasures[] ) {
+    public void discardHiddenTreasures( ArrayList<Treasure> treasures ) {
         for(Treasure treasure : treasures){
            //treasure = next(): Treasure (discardVisibleTreasures.pdf)
            currentPlayer.discardHiddenTreasure(treasure);
@@ -70,13 +73,13 @@ public class Napakalaki {
         } 
     }
     
-    public void makeTreasuresVisible( Treasure treasures[] ) {
+    public void makeTreasuresVisible( ArrayList<Treasure> treasures ) {
         //t = next():Treasure(makeTreasuresVisible.pdf)
         for(Treasure treasure : treasures)
             currentPlayer.makeTreasureVisible(treasure);
     }
     
-    public void initGame( String players[] ) {
+    public void initGame( ArrayList<String> players ) {
         this.initPlayers(players);
         this.setEnemies();
         CardDealer.getInstance().initCards();

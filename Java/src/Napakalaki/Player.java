@@ -1,22 +1,28 @@
 package Napakalaki;
 
-import java.util.ArrayList;
+import java.util.*;
 
 public class Player {
     protected final int MAXLEVEL = 10;
     // Atributos
     private String name;
     private int level;
-    private boolean dead = true;
-    private boolean canISteal = true;
+    private boolean dead;
+    private boolean canISteal;
     private Player enemy;
     private BadConsequence pendingBadConsequence;
-    private final ArrayList<Treasure> visibleTreasures = new ArrayList();
-    private final ArrayList<Treasure> hiddenTreasures = new ArrayList();
+    private final ArrayList<Treasure> visibleTreasures;
+    private final ArrayList<Treasure> hiddenTreasures;
     
     // Constructor
     public Player( String name ) {
-        // ISSUE::Implementar
+        this.name = name;
+        this.level = 1;
+        this.hiddenTreasures = new ArrayList();
+        this.visibleTreasures = new ArrayList();
+        this.dead = true;
+        this.canISteal = true;
+        enemy = null;
     }
     
     // Metodos
@@ -118,16 +124,16 @@ public class Player {
         return dead;
     }
     
-    public ArrayList getHiddenTreasures() {
+    public ArrayList<Treasure> getHiddenTreasures() {
         return hiddenTreasures;
     }
     
-    public ArrayList getVisibleTreasures() {
+    public ArrayList<Treasure> getVisibleTreasures() {
         return visibleTreasures;
     }
     
     public CombatResult combat( Monster m ) {
-        CombatResult combatresult;
+        CombatResult combatresult = null;
         int myLevel = this.getCombatLevel();
         int monsterLevel = m.getCombatLevel();
         if(!this.canISteal){ //Atribute or function??
@@ -144,7 +150,7 @@ public class Player {
             else
                 combatresult = CombatResult.WIN;
         }
-        else{
+        else if(myLevel <= monsterLevel){
             this.applyBadConsequence(m);
             combatresult = CombatResult.LOSE;
         }
@@ -157,6 +163,8 @@ public class Player {
             if( hiddenTreasures.remove(t))
                 visibleTreasures.add(t);   
         }
+        else
+            System.out.println ("\nNo puedes pasarlo a visible\n");
     }
     
     public void discardVisibleTreasure( Treasure t ) {
@@ -226,8 +234,10 @@ public class Player {
     }
     
     private Treasure giveMeATreasure() {
-        int numeroAleatorio = (int) ( Math.random() * hiddenTreasures.size() + 1 );
-        return hiddenTreasures.get(numeroAleatorio);
+        Random num = new Random();
+        Treasure treasure = hiddenTreasures.get(num.nextInt() % hiddenTreasures.size());
+        hiddenTreasures.remove(treasure);
+        return treasure;
     }
     
     public boolean canISteal() {
@@ -265,5 +275,8 @@ public class Player {
             discardHiddenTreasure(treasure);
         });
        
+    }
+    public String toString(){
+        return this.name;
     }
 }

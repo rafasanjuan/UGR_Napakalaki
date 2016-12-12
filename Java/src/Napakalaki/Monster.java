@@ -32,9 +32,9 @@ public class Monster {
     public int getTreasuresGained() {
         return prize.getTreasures();
     }
-    /*
+    
     public String toString(){
-        return "El nombre del monsturo = " + name + "Puntos de nivel = " + Integer.toString(combatLevel) + prize.toString() + bad_consequence.toString();
+        return "El nombre del monsturo = " + this.name + "\nPuntos de nivel = " + Integer.toString(combatLevel) + "\nPrize{" + prize.toString() + "}" + "\nBad Consequence{" + badConsequence.toString() + "}";
     }
-    */
+    
 }

@@ -23,5 +23,8 @@ public class Treasure {
     public TreasureKind getType(){
         return type;
     }
+    public String toString(){
+        return this.name + "\nTipo = " + this.type + "  Bonus = " + this.bonus;
+    }
 }
 

@@ -27,10 +27,18 @@ public class BadConsequence {
         this.levels = levels;
         this.specificVisibleTreasures = tVisible;
         this.specificHiddenTreasures = tHidden;
+        this.nHiddenTreasures = 0;
+        this.nVisibleTreasures = 0;
+        this.death = false;
     }
     BadConsequence( String text, boolean death ){
         this.text = text;
         this.death = death;
+        if(death == true){
+            this.levels = 10;
+            nVisibleTreasures = MAXTREASURES;
+            nHiddenTreasures = MAXTREASURES;
+        }
     }
     
     /* Metodos de acceso a variables */
@@ -59,7 +67,14 @@ public class BadConsequence {
     String ListaTesoros(){
         String cadena = " ";
         for(TreasureKind t:specificVisibleTreasures){
-            cadena = cadena + t.toString();
+            cadena = cadena + "\n" + t.toString();
+        }
+    return cadena;
+    }
+    String ListaTesorosOcultos(){
+        String cadena = " ";
+        for(TreasureKind t:specificHiddenTreasures){
+            cadena = cadena + "\n" +t.toString();
         }
     return cadena;
     }
@@ -90,35 +105,59 @@ public class BadConsequence {
             nHiddenTreasures--;
     }
     
-    public String toString(){
+    /*public String toString(){
         return text + " Niveles perdidos = " + Integer.toString(levels) + " Tesoros perdidos" + Integer.toString(nVisibleTreasures) + ListaTesoros();
-    }
+    }*/
     
     public BadConsequence adjustToFitTreasureLists ( ArrayList<Treasure> v, ArrayList<Treasure> h) { //comprobar cabecera
-        BadConsequence local_bc = new BadConsequence("",false);
+        BadConsequence local_bc = null;
         
         if(nVisibleTreasures > 0 || nHiddenTreasures > 0){
+            int local_nVisibleTreasures;
+            int local_nHiddenTreasures;
             if(nVisibleTreasures < v.size())
-                local_bc.nVisibleTreasures = nVisibleTreasures;
+                local_nVisibleTreasures = nVisibleTreasures;
             else
-                local_bc.nVisibleTreasures = v.size();
+                local_nVisibleTreasures = v.size();
             
             if(nHiddenTreasures < h.size())
-                local_bc.nHiddenTreasures = nHiddenTreasures;
+                local_nHiddenTreasures = nHiddenTreasures;
             else
-                local_bc.nHiddenTreasures = h.size();
+                local_nHiddenTreasures = h.size();
+            
+            local_bc = new BadConsequence("",0 , local_nVisibleTreasures, local_nHiddenTreasures);
         }
         else if(specificVisibleTreasures.size() > 0 || specificHiddenTreasures.size() > 0){
+            ArrayList<TreasureKind> local_specificHiddenTreasures = new ArrayList();
+            ArrayList<TreasureKind> local_specificVisibleTreasures = new ArrayList();
+    
             for (Treasure v_treasure : v) {
                 if(specificVisibleTreasures.contains(v_treasure.getType()))
-                    local_bc.specificVisibleTreasures.add(v_treasure.getType());
+                    local_specificVisibleTreasures.add(v_treasure.getType());
             }
             for (Treasure h_treasure : h) {
                 if(specificHiddenTreasures.contains(h_treasure.getType()))
-                    local_bc.specificHiddenTreasures.add(h_treasure.getType());
+                    local_specificHiddenTreasures.add(h_treasure.getType());
             }
+            local_bc = new BadConsequence("",0 , local_specificVisibleTreasures, local_specificHiddenTreasures);
         }
+        
     return local_bc;
+    }
+    
+    public String toString(){
+        String salida;
+        salida = this.text + "\nNivel = " + this.levels;
+        
+        if(nHiddenTreasures > 0 || nVisibleTreasures > 0 ){
+            salida = salida + "\nnVisibleTreasures = " + nVisibleTreasures;
+            salida = salida + "\nnHiddenTreasures = " + nHiddenTreasures;
+        }
+        else{
+            salida = salida + this.ListaTesoros();
+            salida = salida + this.ListaTesorosOcultos();
+        }
+    return salida;    
     }
 
   
