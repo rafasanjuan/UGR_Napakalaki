@@ -1,7 +1,7 @@
 package Napakalaki;
 
 public class Treasure {
-    // Atributos
+    
     private String name;
     private int bonus;
     private TreasureKind type;
@@ -14,17 +14,18 @@ public class Treasure {
     }
     
     // Metodos de acceso a datos
-    public String getName(){
+    public String getName() {
         return name;
     }
-    public int getBonus(){
+    public int getBonus() {
         return bonus;
     }
-    public TreasureKind getType(){
+    public TreasureKind getType() {
         return type;
     }
-    public String toString(){
-        return this.name + "\nTipo = " + this.type + "  Bonus = " + this.bonus;
+    @Override
+    public String toString() {
+        return "(" + this.type + ")\t" + this.name  + ". +" + this.bonus;
     }
 }
 

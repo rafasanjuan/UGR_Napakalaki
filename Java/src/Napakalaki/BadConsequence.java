@@ -1,8 +1,8 @@
 package Napakalaki;
 import java.util.ArrayList;
 
-public class BadConsequence {
-    /* Atributos */
+public abstract class BadConsequence {
+/*    
     protected static int MAXTREASURES = 10;
     private String text = "";
     private int levels;
@@ -12,7 +12,7 @@ public class BadConsequence {
     private ArrayList<TreasureKind> specificHiddenTreasures = new ArrayList();
     private ArrayList<TreasureKind> specificVisibleTreasures = new ArrayList();
     
-    /* Constructores */
+    
     BadConsequence( String text, int levels, int nVisibleTreasures, int nHiddenTreasures ){
         this.text = text;
         this.levels = levels;
@@ -41,7 +41,7 @@ public class BadConsequence {
         }
     }
     
-    /* Metodos de acceso a variables */
+    
     String getText(){
         return text;
     }
@@ -79,7 +79,7 @@ public class BadConsequence {
     return cadena;
     }
     
-    /* Otros metodos */ 
+    
     public boolean isEmpty() {
         boolean empty;
         
@@ -104,10 +104,6 @@ public class BadConsequence {
         else
             nHiddenTreasures--;
     }
-    
-    /*public String toString(){
-        return text + " Niveles perdidos = " + Integer.toString(levels) + " Tesoros perdidos" + Integer.toString(nVisibleTreasures) + ListaTesoros();
-    }*/
     
     public BadConsequence adjustToFitTreasureLists ( ArrayList<Treasure> v, ArrayList<Treasure> h) { //comprobar cabecera
         BadConsequence local_bc = null;
@@ -159,6 +155,29 @@ public class BadConsequence {
         }
     return salida;    
     }
-
-  
+*/
+    
+    protected final static int MAXTREASURES = 10;
+    protected String text;
+    protected int levels;
+       
+    public BadConsequence( String text, int levels ){
+        this.text = text;
+        this.levels = levels;
+    }   
+    
+    public String getText(){
+        return text;
+    }
+    
+    public int getLevels(){
+        return levels;
+    }
+    
+    public abstract void substractVisibleTreasure( Treasure t );
+    public abstract void substractHiddenTreasure ( Treasure t );
+    public abstract boolean isEmpty();
+    public abstract BadConsequence adjustToFitTreasureLists( ArrayList<Treasure> v , ArrayList<Treasure> h );
+    @Override
+    public abstract String toString();
 }
