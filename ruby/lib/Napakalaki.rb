@@ -83,7 +83,16 @@ module NapakalakiGame
     def developCombat
       resultado = @currentPlayer.combat( @currentMonster )
       @dealer.giveMonsterBack( @currentMonster )
-      
+      if(resultado == CombatResult::LOSEANDCONVERT) then
+        cultist = CultistPlayer.new(@currentPlayer, @dealer.nextCultist)
+        @players[@players.index(@currentPlayer)] = cultist
+        @player.each do |player|
+          if(player.enemy == @currentPlayer) then
+            player.enemy = cultist
+          end
+        end
+        @currentPlayer = cultist
+      end
       resultado
     end
 

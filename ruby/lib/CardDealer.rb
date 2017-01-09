@@ -10,18 +10,24 @@ require_relative "Player"
 require_relative "Prize"
 require_relative "Treasure"
 require_relative "TreasureKind"
+require_relative "Cultist"
+require_relative "CultistPlayer"
+
+#require_relative  cultist
+#
 
 module NapakalakiGame
   class CardDealer
 
     include Singleton
-    attr_accessor :unusedTreasures, :usedTreasures, :unusedMonsters, :usedMonsters
+    attr_accessor :unusedTreasures, :usedTreasures, :unusedMonsters, :usedMonsters, :unusedCultist
 
     def initialize
       @unusedTreasures = Array.new
       @usedTreasures   = Array.new
       @unusedMonsters  = Array.new
       @usedMonsters    = Array.new
+      @unusedCultists   = Array.new
     end
 
     def initTreasureCardDeck
@@ -160,12 +166,63 @@ module NapakalakiGame
 
        # Monstruo 19 -> Bicefalo
       prize = Prize.new(2, 1)
-      bad_consequence = BadConsequence.newLevelSpecificTreasures('Te faltan manos para tanta cabeza. Pierdes 3 niveles y tus tesoros visibles de las manos.', 3, [TreasureKind::ONEHAND], [TreasureKind::BOTHHANDS])
+      bad_consequence = BadConsequence.newLevelSpecificTreasures('Te faltan manos para tanta cabeza. Pierdes 3 niveles y tus tesoros visibles de las manos.', 3, [TreasureKind::ONEHAND, TreasureKind::BOTHHANDS], Array.new)
       @unusedMonsters<< Monster.new('Bicefalo', 21, prize, bad_consequence)
       
+      
+      #*************************** New Monsters that changes combatLvL against cultist players ******************************#
+      
+       # Monstruo 20 -> El mal indecible impronunciable
+      prize = Prize.new(3, 1)
+      bad_consequence = BadConsequence.newLevelSpecificTreasures('Pierdes 1 mano visible', 0, [TreasureKind::ONEHAND], Array.new)
+      @unusedMonsters<< Monster.new('El mal indecible impronunciable', 10, prize, bad_consequence, -2)
+      
+      # Monstruo 21 -> Testigos oculares
+      prize = Prize.new( 2, 1)
+      bad_consequence = BadConsequence.newLevelSpecificTreasures('Pierdes tus tesoros visibles. Jajaja.', 0, [TreasureKind::ARMOR, TreasureKind::ONEHAND,TreasureKind::BOTHHANDS, TreasureKind::HELMET, TreasureKind::SHOES, TreasureKind::NECKLACE], Array.new)
+      @unusedMonsters<< Monster.new('Testigos Oculares', 6, prize, bad_consequence, +2)      
+      
+      # Monstruo 22 -> EL gran cthulhu
+      prize = Prize.new( 2, 5)
+      bad_consequence = BadConsequence.newDeath('Hoy no es tu dia de suerte. Mueres.')
+      @unusedMonsters<< Monster.new('El gran cthulhu', 20, prize, bad_consequence, +4)  
+      
+      # Monstruo 23 -> Serpiente Político
+      prize = Prize.new( 2, 1)
+      bad_consequence = BadConsequence.newLevelSpecificTreasures('Tu gobierno te recorta 2 niveles.', 2, Array.new, Array.new)
+      @unusedMonsters<< Monster.new('Serpiente Político', 8, prize, bad_consequence, -2)      
+     
+      # Monstruo 24 -> Felpuggoth
+      prize = Prize.new( 1, 1)
+      bad_consequence = BadConsequence.newLevelSpecificTreasures('Pierdes tu casco y tu armadura visible. Pierdes tus manos ocultas.', 0, [TreasureKind::ARMOR, TreasureKind::HELMET], [TreasureKind::ONEHAND, TreasureKind::BOTHHANDS])
+      @unusedMonsters<< Monster.new('Felpuggoth', 2, prize, bad_consequence, +5)  
+      
+      # Monstruo 25 -> Shoggoth
+      prize = Prize.new( 4, 2)
+      bad_consequence = BadConsequence.newLevelSpecificTreasures('Pierdes 2 niveles.', 2, Array.new, Array.new)
+      @unusedMonsters<< Monster.new('Shoggoth', 16, prize, bad_consequence, -4)  
+      
+      # Monstruo 26 -> Lolitagooth
+      prize = Prize.new( 1, 1)
+      bad_consequence = BadConsequence.newLevelSpecificTreasures('Pintalabios negro. Pierdes 2 niveles.', 2, Array.new, Array.new)
+      @unusedMonsters<< Monster.new('Lolitagooth', 2, prize, bad_consequence, +3)  
     end
     private :initMonsterCardDeck
 
+    def  initCultistCardDeck
+      @unused_cultists = Array.new
+      
+      @unusedCultists << Cultist.new(1)
+      @unusedCultists << Cultist.new(2)
+      @unusedCultists << Cultist.new(1)
+      @unusedCultists << Cultist.new(2)
+      @unusedCultists << Cultist.new(1)
+      @unusedCultists << Cultist.new(1)
+      
+    end
+    private :init_cultist_card_deck
+    
+    
     def shuffleTreasures
       @unusedTreasures.shuffle!
     end
@@ -173,6 +230,11 @@ module NapakalakiGame
     def shuffleMonsters
       @unusedMonsters.shuffle!
     end
+
+    def shuffleCultist
+      @unusedCultist.shuffle!
+    end
+    private:shuffleCultist
 
     def nextTreasure
       # Si no quedan cartas:
@@ -209,6 +271,17 @@ module NapakalakiGame
       siguiente_monstruo
     end
 
+    def nextCultist
+      if(@unusedCultists.empty?)
+        puts "No quedan sectarios"
+        next_cultist = nil
+      else
+        next_cultist = @unusedCultists[0]
+        @unusedCultists.delete(next_cultist)
+      end
+      next_cultist
+    end
+    
     def giveTreasureBack( t )
       @usedTreasures << t
     end
@@ -220,8 +293,10 @@ module NapakalakiGame
     def initCards
       initTreasureCardDeck
       initMonsterCardDeck
+      initCultistCardDeck
       shuffleTreasures
       shuffleMonsters
+      shuffleCultist
     end
 
   end

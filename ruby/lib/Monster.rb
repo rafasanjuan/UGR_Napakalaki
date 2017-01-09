@@ -2,15 +2,20 @@
 
 module NapakalakiGame
   class Monster
-    attr_reader :name, :combatLevel, :prize, :badConsequence
+    attr_reader :name, :combatLevel, :prize, :badConsequence, :levelChangeAgainstCultistPlayer
 
-    def initialize( aName,combatLvl, aPrize, bc )
+    def initialize( aName,combatLvl, aPrize, bc, lvlChangeAgainstCultistPlayer = 0 )
        @name            = aName
        @combatLevel     = combatLvl
        @prize           = aPrize
        @badConsequence = bc
+       @levelChangeAgainstCultistPlayer = lvlChangeAgainstCultistPlayer
     end
 
+    def getCombatLevelAgainstCultistPlayer
+      return getLevelsGained + @levelChangeAgainstCultistPlayer
+    end
+    
     def getLevelsGained
       @prize.levels
     end

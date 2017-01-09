@@ -9,13 +9,16 @@ require_relative "Monster"
 require_relative "Prize"
 require_relative "Treasure"
 require_relative "TreasureKind"
+require_relative "Cultist"
+require_relative "CultistPlayer"
 
 module NapakalakiGame
   class Player
 
     @@MAXLEVEL = 10
     attr_reader :name, :level, :dead, :canISteal, :hiddenTreasures, :visibleTreasures 
-    attr_writer :pendingBadConsequence, :enemy
+    attr_writer :pendingBadConsequence
+    attr_accessor :enemy 
 
     def initialize( name )
       @name = name
@@ -26,6 +29,18 @@ module NapakalakiGame
       @hiddenTreasures = Array.new
       @pendingBadConsequence = BadConsequence.newLevelNumberOfTreasures( "", 0, 0, 0 )
     end
+    
+    def copyConstructor(player)
+      @name = player.name
+      @level = player.level
+      @dead = player.dead
+      @canISteal = player.canISteal
+      @visibleTreasures = player.visibleTreasures
+      @hiddenTreasures = player.hiddenTreasures
+      @pendingBadConsequence = player.pendingBadConsequence
+      @enemy = player.enemy
+    end
+    
 
     def getHiddenTreasures
       @hiddenTreasures
@@ -126,7 +141,7 @@ module NapakalakiGame
       # ISSUE::No es seguro que funcione, todavia es un esquema.
       
       myLevel = getCombatLevel
-      monsterLevel = m.combatLevel
+      monsterLevel = getOponentLevel(m)
 
       if !@canISteal then
         number = @dice.nextNumber
@@ -145,7 +160,12 @@ module NapakalakiGame
         end
       else
         applyBadConsequence( m )
-        combatResult = CombatResult::LOSE
+        if(shouldConvert)
+          puts 'Te has convertido en sectario'
+          combatResult = CombatResult::LOSEANDCONVERT
+        else
+          combatResult = CombatResult::LOSE
+        end
       end
 
       combatResult
@@ -258,5 +278,15 @@ module NapakalakiGame
       
       nivel
     end
+    
+    def getOponentLevel(monster)
+      monster.combatLevel
+    end
+    
+    def shouldConvert
+      number = @dice.nextNumber
+      return number == 6
+    end
+    
   end
 end
