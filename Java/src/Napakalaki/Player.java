@@ -3,7 +3,7 @@ package Napakalaki;
 import java.util.*;
 
 public class Player {
-    protected final int MAXLEVEL = 10;
+    protected final static int MAXLEVEL = 10;
     // Atributos
     private String name;
     private int level;
@@ -11,8 +11,8 @@ public class Player {
     private boolean canISteal;
     private Player enemy;
     private BadConsequence pendingBadConsequence;
-    private final ArrayList<Treasure> visibleTreasures;
-    private final ArrayList<Treasure> hiddenTreasures;
+    private ArrayList<Treasure> visibleTreasures;
+    private ArrayList<Treasure> hiddenTreasures;
     
     // Constructor
     public Player( String name ) {
@@ -25,6 +25,17 @@ public class Player {
         enemy = null;
     }
     
+    public Player( Player p ) {
+        this.name = p.name;
+        this.level = p.level;
+        this.dead = p.dead;
+        this.canISteal = p.canISteal;
+        this.enemy = p.enemy;
+        this.pendingBadConsequence = p.pendingBadConsequence;
+        this.visibleTreasures = p.visibleTreasures;
+        this.hiddenTreasures = p.hiddenTreasures;
+    }
+    
     // Metodos
     public String getName() {
         return name;
@@ -34,8 +45,13 @@ public class Player {
         dead = false;
     }
     
-    private int getCombatLevel() {
-        return level;
+    protected int getCombatLevel() {
+        int combat_level = level;
+        
+        for ( Treasure i : visibleTreasures )
+            combat_level += i.getBonus();
+        
+        return combat_level;
     }
     
     private void incrementLevels( int l ) {
@@ -132,29 +148,43 @@ public class Player {
         return visibleTreasures;
     }
     
-    public CombatResult combat( Monster m ) {
-        CombatResult combatresult = null;
+    public CombatResult combat( Monster m ) 
+    {
+        CombatResult combat_result = null;
+        
         int myLevel = this.getCombatLevel();
-        int monsterLevel = m.getCombatLevel();
-        if(!this.canISteal){ //Atribute or function??
+        int monsterLevel = getOponentLevel( m );
+        
+        if( !this.canISteal )
+        {
             int number = Dice.getInstance().nextNumber();
             if(number < 3){
                 int enemyLevel = enemy.getCombatLevel();
                 monsterLevel = monsterLevel + enemyLevel;
             }
         }
-        if(myLevel > monsterLevel){
+        
+        if( myLevel > monsterLevel ) {
             this.applyPrize(m);
             if(this.level >= MAXLEVEL)
-                combatresult = CombatResult.WINGAME;
+                combat_result = CombatResult.WINGAME;
             else
-                combatresult = CombatResult.WIN;
+                combat_result = CombatResult.WIN;
         }
-        else if(myLevel <= monsterLevel){
-            this.applyBadConsequence(m);
-            combatresult = CombatResult.LOSE;
+        else if(myLevel <= monsterLevel)
+        {    
+            if ( shouldConvert() )
+            {
+                combat_result = CombatResult.LOSEANDCONVERT;
+                // ISSUE::¿Si se convierte no recive las consecuencias?
+            }
+            else
+            {
+                this.applyBadConsequence(m);
+                combat_result = CombatResult.LOSE;
+            }
         }
-    return combatresult;        
+        return combat_result;        
     }
     
     public void makeTreasureVisible( Treasure t ) {
@@ -246,24 +276,13 @@ public class Player {
     
     private boolean canYouGiveMeATreasure() {
         // ¿Los tesoros invisibles pueden ser robados?
-        if ( visibleTreasures.isEmpty() )
-            return false;
-        else
-            return true;
+        return visibleTreasures.isEmpty();
     }
     
     private void haveStolen() {
         canISteal = false;
     }
     
-    /* void discardAllTreasures() {
-        visibleTreasures.forEach((visibleTreasure) -> {
-            this.discardVisibleTreasure(visibleTreasure);
-        });
-        hiddenTreasures.forEach((hiddenTreasure) -> {
-            this.discardHiddenTreasure(hiddenTreasure);
-        });
-    }*/
     public void discardAllTreasures(){
         ArrayList<Treasure> local_visible_treasures = new ArrayList<>(visibleTreasures);
         ArrayList<Treasure> local_hidden_treasures = new ArrayList<> (hiddenTreasures);
@@ -278,5 +297,21 @@ public class Player {
     }
     public String toString(){
         return this.name;
+    }
+    
+    protected boolean shouldConvert() {
+        return ( Dice.getInstance().nextNumber() == 6 );
+    }
+    
+    protected int getOponentLevel( Monster m ) {
+        return m.getCombatLevel();
+    }
+    
+    protected Player getEnemy( ) {
+        return this.enemy;
+    }
+    
+    protected void setHiddenTreasures( ArrayList<Treasure> list ) {
+        this.hiddenTreasures = list;
     }
 }

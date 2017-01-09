@@ -5,12 +5,23 @@ public class Monster {
     private int combatLevel;
     private Prize prize;
     private BadConsequence badConsequence;
+    private int levelChangeAgainstCultistPlayer;
     
-    public Monster(String name, int level, BadConsequence bc, Prize prize){
+    public Monster( String name, int level, BadConsequence bc, Prize prize, int lC ){
         this.name = name;
         this.combatLevel = level;
         this.prize = prize;
         this.badConsequence = bc;
+        this.levelChangeAgainstCultistPlayer = lC;
+    }
+    
+    // ISSUE::¿Hace falta conservar el antiguo constructor?
+    public Monster( String name, int level, BadConsequence bc, Prize prize ){
+        this.name = name;
+        this.combatLevel = level;
+        this.prize = prize;
+        this.badConsequence = bc;
+        this.levelChangeAgainstCultistPlayer = 0;
     }
     
     public String getName(){
@@ -21,11 +32,15 @@ public class Monster {
         return combatLevel;
     }
     
-    public BadConsequence getBadConsequence(){
+    public int getCombatLevelAgainstCultistPlayer() {
+        return ( combatLevel + levelChangeAgainstCultistPlayer );
+    }
+    
+    public BadConsequence getBadConsequence() {
         return badConsequence;
     }
     
-    public int getLevelsGained(){
+    public int getLevelsGained() {
         return prize.getLevels();
     }
     
@@ -33,8 +48,15 @@ public class Monster {
         return prize.getTreasures();
     }
     
-    public String toString(){
-        return "El nombre del monsturo = " + this.name + "\nPuntos de nivel = " + Integer.toString(combatLevel) + "\nPrize{" + prize.toString() + "}" + "\nBad Consequence{" + badConsequence.toString() + "}";
+    @Override
+    public String toString() {
+        String monstruo = "";
+        
+        monstruo += this.name;
+        monstruo += " ( Nivel: " + Integer.toString(combatLevel) + " )" + "\n";
+        monstruo += "Recompensa: " + prize.toString() + "\n";
+        monstruo += "Mal rollo: " + badConsequence.toString() + "\n";
+        
+        return monstruo;
     }
-    
 }

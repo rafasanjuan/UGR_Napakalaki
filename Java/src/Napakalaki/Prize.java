@@ -16,15 +16,16 @@ public class Prize {
         return levels;
     }
     
-    void set_treasures(int treasures){
+    void set_treasures( int treasures ) {
         this.treasures = treasures;
     }
-    void set_levels(int levels){
+    void set_levels( int levels ) {
         this.levels = levels;
     }
     
+    @Override
     public String toString(){
-      return " Treasures = " + Integer.toString(treasures) + " Levels = " + Integer.toString(levels);
+      return Integer.toString(treasures) + " tesoros, " + Integer.toString(levels) + " niveles.";
     }
     
 }
