@@ -220,7 +220,7 @@ module NapakalakiGame
       @unusedCultists << Cultist.new(1)
       
     end
-    private :init_cultist_card_deck
+    private :initCultistCardDeck
     
     
     def shuffleTreasures

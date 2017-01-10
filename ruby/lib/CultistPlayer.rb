@@ -1,13 +1,14 @@
-require_relative "Player"
-require_relative "Cultist"
-require_relative "Dice"
+require_relative 'Player.rb'
+require_relative 'Cultist.rb'
+require_relative 'Dice.rb'
+
 
 module NapakalakiGame
   
 
 class CultistPlayer < Player
   attr_reader :totalCultistPlayers
-  attr_accesor :myCultistCard
+  attr_accessor :myCultistCard
   @@totalCultistPlayers = 0
   
   def initialize(player, cultist)
