@@ -59,6 +59,11 @@ public class GameTester {
             case LOSE :
               System.out.println ("\n\n Has perdido el combate, te toca cumplir el mal rollo");
               break;
+            case LOSEANDCONVERT : 
+			    System.out.println ("\n\n Has perdido el combate, y te has convertido en sectario"); 
+			    System.out.println ("\n No obstante, tienes que cumplir el mal rollo"); 
+			    currentPlayer = game.getCurrentPlayer(); 
+			    break;
           }
           if (combatResult != CombatResult.WINGAME) {
             do { // Hasta que se avance de turno 
