@@ -1,6 +1,5 @@
 #encoding: UTF-8
 
-
 require_relative "BadConsequence"
 require_relative "CardDealer"
 require_relative "CombatResult"
@@ -17,9 +16,9 @@ module NapakalakiGame
 
     @@MAXLEVEL = 10
     attr_reader :name, :level, :dead, :canISteal, :hiddenTreasures, :visibleTreasures 
-    attr_writer :pendingBadConsequence
-    attr_accessor :enemy 
-
+    attr_accessor :enemy , :pendingBadConsequence
+		
+		
     def initialize( name )
       @name = name
       @level = 0
@@ -27,7 +26,7 @@ module NapakalakiGame
       @canISteal = true
       @visibleTreasures = Array.new
       @hiddenTreasures = Array.new
-      @pendingBadConsequence = BadConsequence.newLevelNumberOfTreasures( "", 0, 0, 0 )
+      @pendingBadConsequence = nil
     end
     
     def copyConstructor(player)
@@ -75,7 +74,7 @@ module NapakalakiGame
       nTreasures = m.getTreasuresGained
       if nTreasures > 0 then
         for i in 0..( nTreasures - 1 )
-          @hiddenTreasures.add( CardDealer.instance.nextTreasure )
+          @hiddenTreasures<<CardDealer.instance.nextTreasure 
         end
       end
     end
@@ -141,7 +140,7 @@ module NapakalakiGame
       # ISSUE::No es seguro que funcione, todavia es un esquema.
       
       myLevel = getCombatLevel
-      monsterLevel = getOponentLevel(m)
+      monsterLevel = m.combatLevel
 
       if !@canISteal then
         number = @dice.nextNumber
@@ -180,31 +179,35 @@ module NapakalakiGame
     end
 
     def discardVisibleTreasure( t )
-      @visibleTreasures.remove( t )
-      if @pendingBadConsequence == null && !@pendingBadConsequence.isEmpty()
-        @pendingBadConsequence.substractVisibleTreasure( t )
+      @visibleTreasures.delete( t )
+      if !@pendingBadConsequence.nil? 
+				if(!@pendingBadConsequence.isEmpty())
+					@pendingBadConsequence.substractVisibleTreasure( t )
+				end
       end
-      @currentPlayer.dieIfNoTreasures
+			CardDealer.instance.giveTreasureBack(t)
+      dieIfNoTreasures
     end
 
     def discardHiddenTreasure( t )
-      @hiddenTreasures.remove( t )
-      if @pendingBadConsequence == null && !@pendingBadConsequence.isEmpty()
-        @pendingBadConsequence.substractHiddenTreasure( t )
+      @hiddenTreasures.delete( t )
+      if !@pendingBadConsequence.nil?
+				if (!@pendingBadConsequence.isEmpty())
+				 @pendingBadConsequence.substractHiddenTreasure( t )
+				end
       end
-      @currentPlayer.dieIfNoTreasures
+      CardDealer.instance.giveTreasureBack(t)
+      dieIfNoTreasures
     end
 
     def validState
       # ISSUE::Comprobar que los tesoros que lleva el jugador al equiparselos
       # estan en un estado valido.
       estado_valido = false
-
-      if @pendingBadConsequence.isEmpty && @hiddenTreasures.size <= 4
-        estado_valido = true
-      end
-
-      estado_valido 
+			if(!@pendingBadConsequence.nil?)
+				estado_valido = ( @pendingBadConsequence.isEmpty() && @hiddenTreasures.length <= 4)
+			end
+			return estado_valido
     end
 
     def initTreasures
@@ -243,7 +246,10 @@ module NapakalakiGame
 
     # Devuelve un tesoro oculto al azar.
     def giveMeATreasure
+      #Comprobar que se puede
       @hiddenTreasures[ random( @hiddenTreasures.size ) ]
+      #Eliminarlo del array
+      #return
     end
     private :giveMeATreasure
 
@@ -257,10 +263,12 @@ module NapakalakiGame
     #private :canYouGiveMeATreasure
 
     def discardAllTreasures
-      @visibleTreasures.each do |x|
+			copy_visible_treasures = Array.new(@visibleTreasures)
+			copy_hidden_treasures = Array.new(@hiddenTreasures)
+      copy_visible_treasures.each do |x|
         discardVisibleTreasure( x )
       end
-      @hiddenTreasures.each do |y|
+      copy_hidden_treasures.each do |y|
         discardHiddenTreasure( y )
       end
     end
@@ -284,6 +292,7 @@ module NapakalakiGame
     end
     
     def shouldConvert
+			@dice = Dice.instance
       number = @dice.nextNumber
       return number == 6
     end

@@ -129,11 +129,10 @@ module NapakalakiGame
       if stateOK then
         @currentMonster = @dealer.nextMonster
         @currentPlayer = nextPlayer
-        dead = @currentPlayer.dead
+        if (@currentPlayer.dead)
+					 @currentPlayer.initTreasures
+				end
 
-        if dead then
-          @currentPlayer.initTreasures
-        end
       end
       stateOK
     end

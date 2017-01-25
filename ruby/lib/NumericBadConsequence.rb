@@ -4,21 +4,20 @@
 require_relative "TreasureKind"
 require_relative "BadConsequence"
 module NapakalakiGame
-
+@@MAXTREASURES = 10
 
 class NumericBadConsequence < BadConsequence
   attr_reader :nVisibleTreasures, :nHiddenTreasures
   
   def initialize(aText, someLevels, someVisibleTreasures, someHiddenTreasures)
-    super(aText, someLevels)
+    super(aText, someLevels, false)
     @nVisibleTreasures = someVisibleTreasures
     @nHiddenTreasures = someHiddenTreasures
   end
 public_class_method :new
 
 def isEmpty
-  vacio = (@nVisibleTreasures + @nHiddenTreasures == 0)
-  vacio
+		return(@nVisibleTreasures + @nHiddenTreasures == 0)
 end
 
 def substractVisibleTreasure( t = nil )
@@ -47,7 +46,7 @@ def adjustToFitTreasureLists(v,h)
   end
   
   bc = NumericBadConsequence.new(@text, @levels, visibleBc, hiddenBc)
-  bc
+  return bc
 end
 
 #to_s
