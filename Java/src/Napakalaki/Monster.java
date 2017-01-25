@@ -48,6 +48,10 @@ public class Monster {
         return prize.getTreasures();
     }
     
+    public Prize getPrize() {
+        return prize;
+    }
+    
     @Override
     public String toString() {
         String monstruo = "";

@@ -24,11 +24,11 @@ public class CardDealer {
     // Metodos
     private void initTreasureCardDeck() {
                 // 1º TESORO - ¡SÍ MI AMO!
-        Treasure tesoro = new Treasure("¡Sí mi amo!", 4, TreasureKind.HELMET);
+        Treasure tesoro = new Treasure( "¡Sí mi amo!", 4, TreasureKind.HELMET );
         unusedTreasures.add(tesoro);
         
         // 2º TESORO - BOTAS DE INVESTIGACIÓN
-        tesoro = new Treasure("Botas de investigación", 3, TreasureKind.SHOES);
+        tesoro = new Treasure( "Botas de investigación", 3, TreasureKind.SHOES );
         unusedTreasures.add(tesoro);
         
         // 3º TESORO - CAPUCHA DE CTHULHU

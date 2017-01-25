@@ -161,6 +161,11 @@ public abstract class BadConsequence {
     protected String text;
     protected int levels;
        
+    public BadConsequence( ) {
+        this.text = "";
+        this.levels = 0;
+    }   
+    
     public BadConsequence( String text, int levels ){
         this.text = text;
         this.levels = levels;

@@ -32,7 +32,7 @@ public class Napakalaki {
         {
              int indice_actual = players.indexOf( currentPlayer );
              
-             if ( indice_actual == players.size() )
+             if ( indice_actual == players.size()-1 )
                  indice = 0;
              else
                  indice = indice_actual + 1;
@@ -42,11 +42,15 @@ public class Napakalaki {
         return currentPlayer;
     }
     
-    private boolean nextTurnAllowed(){
+    public boolean nextTurnAllowed(){
         boolean valido = true;
-        if(currentPlayer != null && currentPlayer.validState() == false){
-            valido = false;
-        }
+
+        if (this.currentPlayer == null)
+            valido = true;
+        
+        else
+            valido = this.currentPlayer.validState();
+
         return valido;
     }
     private void setEnemies(){
@@ -95,30 +99,27 @@ public class Napakalaki {
     }
     public void discardVisibleTreasures( ArrayList<Treasure> treasures ) {
         for (Treasure treasure : treasures) {
-            //treasure = next(): Treasure (discardVisibleTreasures.pdf)
             currentPlayer.discardVisibleTreasure(treasure);
             CardDealer.getInstance().giveTreasureBack(treasure);
         }
     }
     public void discardHiddenTreasures( ArrayList<Treasure> treasures ) {
-        for(Treasure treasure : treasures){
-           //treasure = next(): Treasure (discardVisibleTreasures.pdf)
+        for(Treasure treasure : treasures) {
            currentPlayer.discardHiddenTreasure(treasure);
            CardDealer.getInstance().giveTreasureBack(treasure);
         } 
     }
     
     public void makeTreasuresVisible( ArrayList<Treasure> treasures ) {
-        //t = next():Treasure(makeTreasuresVisible.pdf)
-        for(Treasure treasure : treasures)
-            currentPlayer.makeTreasureVisible(treasure);
+        for ( Treasure t : treasures )
+            currentPlayer.makeTreasureVisible( t );
     }
     
     public void initGame( ArrayList<String> players ) {
-        this.initPlayers(players);
-        this.setEnemies();
+        initPlayers(players);
+        setEnemies();
         CardDealer.getInstance().initCards();
-        this.nextTurn();
+        nextTurn();
     }
     
     public Player getCurrentPlayer() {
@@ -130,23 +131,20 @@ public class Napakalaki {
     }
     
     public boolean nextTurn() {
-        boolean stateOK = this.nextTurnAllowed();
+        boolean stateOK = nextTurnAllowed();
         if ( stateOK )
         {
             this.currentMonster = CardDealer.getInstance().nextMonster();
-            this.currentPlayer = this.nextPlayer();
-            if(currentPlayer.isDead()){
+            this.currentPlayer =  nextPlayer();
+            if( currentPlayer.isDead() ){
                 currentPlayer.initTreasures();
             }
         }
-    return stateOK;
+        return stateOK;
     }
     
     public boolean endOfGame( CombatResult result ) {
-        boolean endofgame = false;
-        if(result == CombatResult.WINGAME)
-            endofgame = true;
-        return endofgame;
+        return ( result == CombatResult.WINGAME );
     }
     
 }
