@@ -11,6 +11,19 @@ public class NumericBadConsequence extends BadConsequence {
         nVisibleTreasures = v;
         nHiddenTreasures = h;
     }
+
+    public NumericBadConsequence() {
+        nVisibleTreasures = 0;
+        nHiddenTreasures = 0;
+    }
+		
+		public int getNVisibleTreasures() {
+			return nVisibleTreasures;
+		}
+		
+		public int getNHiddenTreasures() {
+			return nHiddenTreasures;
+		}
     
     @Override
     public boolean isEmpty() {
@@ -19,10 +32,14 @@ public class NumericBadConsequence extends BadConsequence {
     
     @Override
     public void substractVisibleTreasure( Treasure t ) {
+			if ( nVisibleTreasures > 0 )
+				nVisibleTreasures--;
     }
     
     @Override
     public void substractHiddenTreasure( Treasure t ) {
+			if ( nHiddenTreasures > 0 )
+				nHiddenTreasures--;
     }
     
     @Override

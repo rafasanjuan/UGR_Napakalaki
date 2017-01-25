@@ -1,9 +1,11 @@
 package Napakalaki;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Random;
+import GUI.Dice;
 
 public class Player {
     protected final static int MAXLEVEL = 10;
+    
     // Atributos
     private String name;
     private int level;
@@ -20,6 +22,7 @@ public class Player {
         this.level = 1;
         this.hiddenTreasures = new ArrayList();
         this.visibleTreasures = new ArrayList();
+        this.pendingBadConsequence = new NumericBadConsequence();
         this.dead = true;
         this.canISteal = true;
         enemy = null;
@@ -42,10 +45,10 @@ public class Player {
     }
     
     private void bringToLife() {
-        dead = false;
+        this.dead = false;
     }
     
-    protected int getCombatLevel() {
+    public int getCombatLevel() {
         int combat_level = level;
         
         for ( Treasure i : visibleTreasures )
@@ -62,11 +65,19 @@ public class Player {
     private void decrementLevels( int l ) {
         if( l > 0 )
             level -= l;
+				
+				if ( level < 1 )
+					dead = true;
     }
     
     private void setPendingBadConsequence( BadConsequence b ) {
         pendingBadConsequence = b;  
     }
+    
+    public BadConsequence getPendingBadConsequence( ) {
+        return pendingBadConsequence;  
+    }
+   
    
     private void applyPrize( Monster m ) {
         int nLevels = m.getLevelsGained();
@@ -83,22 +94,43 @@ public class Player {
     }
     
     private void applyBadConsequence( Monster m ) {
-        BadConsequence bad_consequence = m.getBadConsequence();
-        int nLevels = bad_consequence.getLevels();
-        this.decrementLevels(nLevels);
-        BadConsequence pendingBad;
+			
+        BadConsequence bq, pending_bq;
+				bq = m.getBadConsequence();
+			
+				if ( bq instanceof DeathBadConsequence )
+				{
+					// No lo pone en el diagrama, pero si la bq es de muerte
+					// el jugador debe morir para que haya represalias.
+					this.dead = true;
+					// Ademas tambien hago que pierda todos sus tesoros.
+					this.visibleTreasures.clear();
+					this.hiddenTreasures.clear();
+					this.level = 1;
+					this.canISteal = true;
+					this.pendingBadConsequence = new NumericBadConsequence();
+				}
+				else 
+				{
+					int nLevels = bq.getLevels();
+					decrementLevels( nLevels );
 
-        pendingBad = bad_consequence.adjustToFitTreasureLists(visibleTreasures, hiddenTreasures); //puede que error en llamada o cabecera
-        this.setPendingBadConsequence(pendingBad);
+					pending_bq = bq.adjustToFitTreasureLists(visibleTreasures, hiddenTreasures);
+					setPendingBadConsequence( pending_bq );
+				}
     }
     
     private boolean canMakeTreasureVisible( Treasure t ) {
+			
+			if ( t == null )
+				return false;
+				
         boolean canmakeVisible = true;
         int nmanos = 0;
         if(hiddenTreasures.contains(t)){
             for(int i=0; i < visibleTreasures.size() && canmakeVisible; i++){
                 if(visibleTreasures.get(i).getType() != TreasureKind.ONEHAND){
-                    if(visibleTreasures.get(i).getType() == t.getType()){
+                    if ( visibleTreasures.get(i).getType() == t.getType() ) {
                         canmakeVisible = false;
                     }
                 }
@@ -176,65 +208,72 @@ public class Player {
             if ( shouldConvert() )
             {
                 combat_result = CombatResult.LOSEANDCONVERT;
-                // ISSUE::¿Si se convierte no recive las consecuencias?
+                // ISSUE::¿Si se convierte recive las consecuencias?
+                applyBadConsequence( m );
             }
             else
             {
-                this.applyBadConsequence(m);
+                applyBadConsequence( m );
                 combat_result = CombatResult.LOSE;
             }
         }
         return combat_result;        
     }
     
-    public void makeTreasureVisible( Treasure t ) {
-        
-        if(canMakeTreasureVisible(t)){
-            if( hiddenTreasures.remove(t))
-                visibleTreasures.add(t);   
+    public void makeTreasureVisible( Treasure t ) 
+    {
+        if( canMakeTreasureVisible( t ) )
+        {
+            if( hiddenTreasures.remove( t ) )
+                
+                visibleTreasures.add( t );   
         }
-        else
-            System.out.println ("\nNo puedes pasarlo a visible\n");
     }
     
     public void discardVisibleTreasure( Treasure t ) {
         visibleTreasures.remove(t);
-        if(pendingBadConsequence != null && (!pendingBadConsequence.isEmpty()))
+        if ( pendingBadConsequence != null )
             pendingBadConsequence.substractVisibleTreasure(t);
-        this.dieIfNoTreasures();
+        dieIfNoTreasures();
     }
     
     public void discardHiddenTreasure( Treasure t ) {
-        hiddenTreasures.remove(t);
-        if(pendingBadConsequence != null && (!pendingBadConsequence.isEmpty())){
-            pendingBadConsequence.substractHiddenTreasure(t);
-        }
-        this.dieIfNoTreasures();
+				// Si lo tiene, lo borra, sino no pasa nada.  
+				hiddenTreasures.remove( t );
+				
+				// Si el jugador tenia que descartarse un objeto de este tipo,
+				// actualizamos la bad consequence para indicar que ya lo ha cumplido.
+        if( pendingBadConsequence != null ) 
+            pendingBadConsequence.substractHiddenTreasure( t );
+				
+				// Si el jugador se queda sin tesoros, muere.
+        dieIfNoTreasures();
     }
     
     public boolean validState() {
-        boolean state = false;
-        if ( !pendingBadConsequence.isEmpty() && hiddenTreasures.size() < 5 )
-            state = true;
-            
-        return state;
+        return ( pendingBadConsequence == null || 
+               ( pendingBadConsequence.isEmpty() && hiddenTreasures.size() <= 4 ) 
+               );
     }
     
-    public void initTreasures() {
+    public void initTreasures() 
+    {
         CardDealer dealer = CardDealer.getInstance();
-        Dice dice = Dice.getInstance();
+        Dice dado = Dice.getInstance();
         
-        this.bringToLife();
+        bringToLife();
+        
         Treasure treasure = dealer.nextTreasure();
         hiddenTreasures.add(treasure);
-       
-        int number = dice.nextNumber();
+				
+        int number = dado.nextNumber( "Girando el dado", "" );
+        //int number = Dice.getInstance().nextNumber();
         
-        if(number > 1){
+        if (number > 1) {
             treasure = dealer.nextTreasure();
             hiddenTreasures.add(treasure);
         }
-        if(number == 6){
+        if (number == 6) {
             treasure = dealer.nextTreasure();
             hiddenTreasures.add(treasure);
         }
@@ -249,14 +288,12 @@ public class Player {
         boolean canYou = enemy.canYouGiveMeATreasure();
         Treasure treasure = null;
         
-        if(canI){
-            if(canYou){
+        if( canI && canYou ) {
                 treasure = enemy.giveMeATreasure();
                 hiddenTreasures.add(treasure);
                 this.haveStolen();
-            }
         }
-    return treasure;
+        return treasure;
     }
     
     public void setEnemy( Player enemy ) {
@@ -264,9 +301,15 @@ public class Player {
     }
     
     private Treasure giveMeATreasure() {
-        Random num = new Random();
-        Treasure treasure = hiddenTreasures.get(num.nextInt() % hiddenTreasures.size());
-        hiddenTreasures.remove(treasure);
+        Treasure treasure = null;
+        
+        if ( !canYouGiveMeATreasure() )
+        {
+            Random num = new Random();
+            treasure = hiddenTreasures.get( num.nextInt() % hiddenTreasures.size() );
+            hiddenTreasures.remove( treasure );
+        }
+        
         return treasure;
     }
     
@@ -275,8 +318,7 @@ public class Player {
     }
     
     private boolean canYouGiveMeATreasure() {
-        // ¿Los tesoros invisibles pueden ser robados?
-        return visibleTreasures.isEmpty();
+        return hiddenTreasures.isEmpty();
     }
     
     private void haveStolen() {
@@ -295,6 +337,8 @@ public class Player {
         });
        
     }
+    
+    @Override
     public String toString(){
         return this.name;
     }
@@ -307,11 +351,11 @@ public class Player {
         return m.getCombatLevel();
     }
     
-    protected Player getEnemy( ) {
+    public Player getEnemy( ) {
         return this.enemy;
     }
     
-    protected void setHiddenTreasures( ArrayList<Treasure> list ) {
+    public void setHiddenTreasures( ArrayList<Treasure> list ) {
         this.hiddenTreasures = list;
     }
 }

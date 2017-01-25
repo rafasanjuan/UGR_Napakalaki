@@ -3,15 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/jj/Universidad/2º/PDOO/Practicas/Practica3/Java_sesion3/src/Napakalaki/Monster.java</file>
-            <file>file:/home/jj/Universidad/2º/PDOO/Practicas/Practica3/Java_sesion3/src/Test/GameTester.java</file>
-            <file>file:/home/jj/Universidad/2º/PDOO/Practicas/Practica3/Java_sesion3/src/Napakalaki/Prize.java</file>
-            <file>file:/home/jj/Universidad/2º/PDOO/Practicas/Practica3/Java_sesion3/src/Napakalaki/Napakalaki.java</file>
-            <file>file:/home/jj/Universidad/2º/PDOO/Practicas/Practica3/Java_sesion3/src/Napakalaki/Player.java</file>
-            <file>file:/home/jj/Universidad/2º/PDOO/Practicas/Practica3/Java_sesion3/src/Napakalaki/BadConsequence.java</file>
-            <file>file:/home/jj/Universidad/2º/PDOO/Practicas/Practica3/Java_sesion3/src/Napakalaki/Treasure.java</file>
-            <file>file:/home/jj/Universidad/2º/PDOO/Practicas/Practica3/Java_sesion3/src/Napakalaki/CardDealer.java</file>
-            <file>file:/home/jj/Universidad/2º/PDOO/Practicas/Practica3/Java_sesion3/src/Napakalaki/EjemploMain.java</file>
+            <file>file:/home/less/NetBeansProjects/primeraGUI/src/Napakalaki/Player.java</file>
+            <file>file:/home/less/NetBeansProjects/primeraGUI/src/GUI/PlayerView.java</file>
+            <file>file:/home/less/NetBeansProjects/primeraGUI/src/GUI/MonsterView.java</file>
+            <file>file:/home/less/NetBeansProjects/primeraGUI/src/Napakalaki/Napakalaki.java</file>
+            <file>file:/home/less/NetBeansProjects/primeraGUI/src/GUI/NapakalakiView.java</file>
         </group>
     </open-files>
 </project-private>

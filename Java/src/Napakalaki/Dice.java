@@ -10,7 +10,7 @@ public class Dice {
         return instance;
     }
     
-    public int nextNumber(){
+    public int nextNumber() {
         int numeroAleatorio = (int) ( Math.random() * 6 + 1 );
         return numeroAleatorio;
     }
