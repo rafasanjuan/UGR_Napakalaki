@@ -197,9 +197,12 @@ public class NapakalakiView extends javax.swing.JFrame {
 						
       currentPlayerView.disableTreasureButtons();
       meetTheMonsterButton.setEnabled( false );
+      combatButton.setEnabled( true );
 		}
 		else  
 		{
+			
+      combatButton.setEnabled( false );
       currentPlayerView.enableTreasureButtons();
 						
       if ( !already_fought ) 
