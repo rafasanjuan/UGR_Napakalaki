@@ -111,6 +111,7 @@ public class NapakalakiView extends javax.swing.JFrame {
       CombatResult combat_result;
             
       combat_result = napakalakiModel.developCombat();
+	  combat_result = CombatResult.WINGAME; /*Cambiar estoooooooo*/
       combatButton.setEnabled( false );
 			meet_the_monster = false;
 			already_fought = true;
@@ -135,6 +136,9 @@ public class NapakalakiView extends javax.swing.JFrame {
       else if ( combat_result == CombatResult.WINGAME )
       {
 				textArea.setText( "¡CONGRATULATIONS! You won the match." );
+				this.dispose();
+				FinishGameView finish = new FinishGameView(this, true);	
+				finish.finishGame(napakalakiModel.getCurrentPlayer().getName() );
       }
 			
       if ( napakalakiModel.getCurrentPlayer().getLevels() < 1 )
@@ -148,7 +152,10 @@ public class NapakalakiView extends javax.swing.JFrame {
         
 		setNapakalaki( napakalakiModel );
     }//GEN-LAST:event_combatButtonActionPerformed
-
+	
+	
+	
+	
     private void nextTurnButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextTurnButtonActionPerformed
       if ( already_fought && napakalakiModel.nextTurnAllowed() )
 			{
