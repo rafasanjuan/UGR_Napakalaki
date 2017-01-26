@@ -305,7 +305,7 @@ public class CardDealer {
 
         badCon = new SpecificBadConsequence( "Pierdes tu casco y tu armadura visible. Pierdes tus manos ocultas.", 0, v, h );
         prize = new Prize( 1, 1 );
-        unusedMonsters.add( new Monster( "Testigos oculares", 2, badCon, prize, 5 ) );
+        unusedMonsters.add( new Monster( "Felpuggoth", 2, badCon, prize, 5 ) );
         
         // SHOGGOTH
         badCon = new NumericBadConsequence( "Pierdes 2 niveles.", 2, 0, 0 );

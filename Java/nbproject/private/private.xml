@@ -3,12 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/jj/Universidad/2º/PDOO/Practicas/practicar/Java/src/GUI/PlayerNamesCapture.java</file>
-            <file>file:/home/jj/Universidad/2º/PDOO/Practicas/practicar/Java/src/Napakalaki/Napakalaki.java</file>
-            <file>file:/home/jj/Universidad/2º/PDOO/Practicas/practicar/Java/src/Napakalaki/main.java</file>
-            <file>file:/home/jj/Universidad/2º/PDOO/Practicas/practicar/Java/src/GUI/NapakalakiView.java</file>
-            <file>file:/home/jj/Universidad/2º/PDOO/Practicas/practicar/Java/src/GUI/PlayerView.java</file>
-            <file>file:/home/jj/Universidad/2º/PDOO/Practicas/practicar/Java/src/GUI/FinishGameView.java</file>
+            <file>file:/home/jj/Universidad/2º/PDOO/Practicas/Practica5/javaGui/Java/src/GUI/MonsterView.java</file>
+            <file>file:/home/jj/Universidad/2º/PDOO/Practicas/Practica5/javaGui/Java/src/GUI/BadConsequenceView.java</file>
+            <file>file:/home/jj/Universidad/2º/PDOO/Practicas/Practica5/javaGui/Java/src/GUI/PendingBadConsequenceView.java</file>
         </group>
     </open-files>
 </project-private>

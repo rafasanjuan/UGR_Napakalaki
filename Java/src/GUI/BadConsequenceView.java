@@ -29,7 +29,6 @@ public class BadConsequenceView extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        textLabel = new javax.swing.JLabel();
         levelTextField = new javax.swing.JTextField();
         vTreasuresTextField = new javax.swing.JTextField();
         levelsLabel = new javax.swing.JLabel();
@@ -40,9 +39,7 @@ public class BadConsequenceView extends javax.swing.JPanel {
         listaVisible = new javax.swing.JList<>();
         jScrollPane2 = new javax.swing.JScrollPane();
         listaHidden = new javax.swing.JList<>();
-
-        textLabel.setFont(new java.awt.Font("Open Sans", 2, 12)); // NOI18N
-        textLabel.setText("(\"<html>First line<br>Second line</html>\")");
+        textLabel = new javax.swing.JLabel();
 
         levelTextField.setEditable(false);
         levelTextField.setFont(new java.awt.Font("Open Sans", 0, 10)); // NOI18N
@@ -67,17 +64,18 @@ public class BadConsequenceView extends javax.swing.JPanel {
 
         jScrollPane2.setViewportView(listaHidden);
 
+        textLabel.setText("jLabel2");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(textLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addGap(1, 1, 1)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
                     .addComponent(jScrollPane2)))
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(levelsLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(levelTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -89,12 +87,16 @@ public class BadConsequenceView extends javax.swing.JPanel {
                 .addComponent(hiddenTreasuresLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(hTreasuresTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(textLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(textLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addContainerGap()
+                .addComponent(textLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
@@ -146,7 +148,7 @@ public class BadConsequenceView extends javax.swing.JPanel {
 	  if ( text.length() > insert_carriage_return )
 		  text = bq.getText().substring(0, insert_carriage_return) + " \n " + bq.getText().substring(insert_carriage_return, bq.getText().length());
 	  
-      textLabel.setText( text );
+   
 			levelTextField.setText( String.valueOf( bq.getLevels() ) );
 			
 			// Vaciamos las listas
