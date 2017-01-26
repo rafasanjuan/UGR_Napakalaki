@@ -1,5 +1,6 @@
 package GUI;
 import Napakalaki.*;
+import java.awt.Color;
 
 public class NapakalakiView extends javax.swing.JFrame {
 
@@ -8,6 +9,7 @@ public class NapakalakiView extends javax.swing.JFrame {
      */
     public NapakalakiView() {
         initComponents();
+		this.getContentPane().setBackground(Color.getHSBColor(255,153,0));
     }
 
     /**
@@ -28,6 +30,7 @@ public class NapakalakiView extends javax.swing.JFrame {
         currentPlayerView = new GUI.PlayerView();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setForeground(java.awt.SystemColor.activeCaption);
 
         meetTheMonsterButton.setText("Meet the Monster");
         meetTheMonsterButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -109,7 +112,6 @@ public class NapakalakiView extends javax.swing.JFrame {
       CombatResult combat_result;
             
       combat_result = napakalakiModel.developCombat();
-	  combat_result = CombatResult.WINGAME; /*Cambiar estoooooooo*/
       combatButton.setEnabled( false );
 			meet_the_monster = false;
 			already_fought = true;

@@ -156,7 +156,7 @@ public class CardDealer {
         Prize prize = new Prize(2, 1); 
         unusedMonsters.add(new Monster("3 Byakhees de bonanza", 8, badCon, prize));
         
-        // 2º MONSTRUO - TENOCHTILAN
+       // 2º MONSTRUO - TENOCHTILAN
         badCon = new SpecificBadConsequence("Embobados con el lindo primigenio te descartas de tu casco visible", 0,
                                     new ArrayList(Arrays.asList(TreasureKind.HELMET)),
                                     new ArrayList());
@@ -315,7 +315,7 @@ public class CardDealer {
         // LOLITAGOOTH
         badCon = new NumericBadConsequence( "Pintalabios negro. Pierdes 2 niveles.", 2, 0, 0 );
         prize = new Prize( 1, 1 );
-        unusedMonsters.add( new Monster( "Lolitagooth", 2, badCon, prize, 3 ) );
+        unusedMonsters.add( new Monster( "Lolitagooth", 2, badCon, prize, 3 ) );  
     }
     
     private void initCultistCardDeck() {
