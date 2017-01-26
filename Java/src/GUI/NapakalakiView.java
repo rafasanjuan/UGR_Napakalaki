@@ -121,8 +121,11 @@ public class NapakalakiView extends javax.swing.JFrame {
       }
       else if ( combat_result == CombatResult.LOSE )
       {
-				textArea.setText( "(RESULT) You lost the combat..."
-                        + "\n(BC) Now you have to redeem your bad consequence." );
+				textArea.setText( "(RESULT) You lost the combat...");
+				if ( !napakalakiModel.getCurrentPlayer().isDead() )
+                    textArea.setText( textArea.getText() + "\n(BC) Now you have to redeem your bad consequence." );
+				else
+					textArea.setText( textArea.getText() + "\n Now you are dead." );
       }
       else if ( combat_result == CombatResult.LOSEANDCONVERT )
 			{

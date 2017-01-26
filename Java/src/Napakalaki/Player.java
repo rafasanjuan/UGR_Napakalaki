@@ -66,8 +66,14 @@ public class Player {
         if( l > 0 )
             level -= l;
 				
-				if ( level < 1 )
+				if ( level < 1 ){
 					dead = true;
+					this.visibleTreasures.clear();
+					this.hiddenTreasures.clear();
+					this.level = 1;
+					this.canISteal = true;
+					this.pendingBadConsequence = new NumericBadConsequence();
+				}
     }
     
     private void setPendingBadConsequence( BadConsequence b ) {
@@ -303,7 +309,7 @@ public class Player {
     private Treasure giveMeATreasure() {
         Treasure treasure = null;
         
-        if ( !canYouGiveMeATreasure() )
+        if ( canYouGiveMeATreasure() )
         {
             Random num = new Random();
             treasure = hiddenTreasures.get( num.nextInt() % hiddenTreasures.size() );
@@ -317,8 +323,8 @@ public class Player {
         return canISteal;
     }
     
-    private boolean canYouGiveMeATreasure() {
-        return hiddenTreasures.isEmpty();
+    public boolean canYouGiveMeATreasure() {		
+        return ( hiddenTreasures != null && !hiddenTreasures.isEmpty() );
     }
     
     private void haveStolen() {
@@ -344,7 +350,7 @@ public class Player {
     }
     
     protected boolean shouldConvert() {
-        return ( Dice.getInstance().nextNumber() == 6 );
+        return ( (int) ( Math.random() * 6 + 1 ) == 6 );
     }
     
     protected int getOponentLevel( Monster m ) {
