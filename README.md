@@ -14,6 +14,6 @@ This project is still in development and a final installable version isn't avail
 
 ## Authors
 
-* **Juan Jose Martín** - *Software Design* - [JuanjoMrt](https://github.com/JuanjoMrt)
-* **Rafael Sanjuan** - *GUI and Software Design* - [Less122](https://github.com/Less122)
+* **Juan Jose Martín** - *Software Development* - [JuanjoMrt](https://github.com/JuanjoMrt)
+* **Rafael Sanjuan** - *GUI and Software Development* - [Less122](https://github.com/Less122)
 * **PDOO Professors at UGR** - *Game Design*
