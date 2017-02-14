@@ -48,4 +48,21 @@ public class CultistPlayer extends Player {
     public int getTotalCultistPlayers() {
         return totalCultistPlayers;
     }
+    
+    @Override
+    public void useJoker() {
+        if ( joker_equipado )
+        {
+            joker_equipado = false;
+            // Sobreescribimos con una nueva mala consequencia vacia.
+            this.pendingBadConsequence = new NumericBadConsequence();
+            super.discardJoker();
+            
+            // Si es cultista tambien pierde un tesoro visible
+            if ( visibleTreasures.size() > 0 ) {
+                int n_tesoro = (int) ( Math.random() * visibleTreasures.size()-1 + 1 );
+                discardVisibleTreasure( visibleTreasures.get( n_tesoro ) );
+            }
+        }
+    }
 }

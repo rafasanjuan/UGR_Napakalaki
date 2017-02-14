@@ -121,6 +121,8 @@ public class TreasureView extends javax.swing.JPanel {
                     type = "ONEHAND";   break;
                 case SHOES:
                     type = "SHOES";     break;
+                case JOKER:
+                    type = "JOKER";     break;
                 default:
                     break;
                 }

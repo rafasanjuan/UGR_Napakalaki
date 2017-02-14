@@ -40,6 +40,7 @@ public class PlayerView extends javax.swing.JPanel {
         enemyTextField = new javax.swing.JTextField();
         canStealTextField = new javax.swing.JTextField();
         levelTextField = new javax.swing.JTextField();
+        useJokerButton = new javax.swing.JButton();
 
         nameLabel.setFont(new java.awt.Font("Droid Sans", 1, 12)); // NOI18N
         nameLabel.setText("Jugador");
@@ -120,6 +121,14 @@ public class PlayerView extends javax.swing.JPanel {
         levelTextField.setText("0");
         levelTextField.setToolTipText("");
 
+        useJokerButton.setFont(new java.awt.Font("Dialog", 0, 10)); // NOI18N
+        useJokerButton.setText("Use Joker");
+        useJokerButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                useJokerButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -156,7 +165,9 @@ public class PlayerView extends javax.swing.JPanel {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(canStealTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(stealTreasureButton))))
+                                .addComponent(stealTreasureButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(useJokerButton))))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(makeVisibleButton, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -188,7 +199,8 @@ public class PlayerView extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(canStealLabel)
                     .addComponent(stealTreasureButton)
-                    .addComponent(canStealTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(canStealTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(useJokerButton))
                 .addGap(18, 18, 18)
                 .addComponent(pendingBadConsequenceView, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -245,6 +257,12 @@ public class PlayerView extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_sectarioLabelActionPerformed
 
+    private void useJokerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_useJokerButtonActionPerformed
+        // EXAMEN
+        napakalakiModel.getCurrentPlayer().useJoker();
+        setPlayer( napakalakiModel.getCurrentPlayer() );
+    }//GEN-LAST:event_useJokerButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel canStealLabel;
@@ -264,13 +282,15 @@ public class PlayerView extends javax.swing.JPanel {
     private GUI.PendingBadConsequenceView pendingBadConsequenceView;
     private javax.swing.JCheckBox sectarioLabel;
     private javax.swing.JButton stealTreasureButton;
+    private javax.swing.JButton useJokerButton;
     private javax.swing.JPanel visibleTreasuresPanel;
     // End of variables declaration//GEN-END:variables
 
     Napakalaki napakalakiModel = Napakalaki.getInstance();
     Player playerModel;
+    boolean joker_equipado = false;
     
-	public void setPlayer( Player p ) {
+    public void setPlayer( Player p ) {
 		playerModel = p;
         
 		nameLabel.setText( p.getName() );
@@ -279,42 +299,46 @@ public class PlayerView extends javax.swing.JPanel {
 			combatLevelTextField.setText( String.valueOf( p.getCombatLevel() ) );
 			levelTextField.setText( String.valueOf( p.getLevels() ) );
 			levelProgressBar.setValue( p.getLevels() );
+                }
+                else
+                {
+                                    levelTextField.setText( "Death" );
+                                    combatLevelTextField.setText( "0" );
+                  levelProgressBar.setValue( 0 );
+                }
+
+                            enemyTextField.setText( p.getEnemy().getName() );
+
+                if ( p.canISteal() && p.getEnemy().canYouGiveMeATreasure()  ) {
+                            canStealTextField.setText( "Yes" );
+                            stealTreasureButton.setEnabled( true );
+                }
+                else {
+                            canStealTextField.setText( "No" );
+                            stealTreasureButton.setEnabled( false );
+                }
+                
+                // NOTA. Idea inspirada por Jose Casal:
+                sectarioLabel.setSelected( p instanceof CultistPlayer );
+
+                pendingBadConsequenceView.setPendingBadConsequence( p.getPendingBadConsequence() );
+
+                fillTreasurePanel( visibleTreasuresPanel, playerModel.getVisibleTreasures() );
+                fillTreasurePanel( hiddenTreasuresPanel, playerModel.getHiddenTreasures() );
+
+                // Buttons.
+                boolean activar = p.getHiddenTreasures().size() > 0 || p.getVisibleTreasures().size() > 0;
+
+                makeVisibleButton.setEnabled( p.getHiddenTreasures().size() > 0 );
+                discardTreasuresButton.setEnabled( activar );
+                discardAllTreasuresButton.setEnabled( activar );
+
+                // EXAMEN
+                useJokerButton.setEnabled( p.getJokerEquipado() );
+                
+                repaint();
+                revalidate();
     }
-    else
-    {
-			levelTextField.setText( "Death" );
-			combatLevelTextField.setText( "0" );
-      levelProgressBar.setValue( 0 );
-    }
-		
-		enemyTextField.setText( p.getEnemy().getName() );
-        
-    if ( p.canISteal() && p.getEnemy().canYouGiveMeATreasure()  ) {
-		canStealTextField.setText( "Yes" );
-		stealTreasureButton.setEnabled( true );
-    }
-    else {
-		canStealTextField.setText( "No" );
-		stealTreasureButton.setEnabled( false );
-    }
-    // NOTA. Idea inspirada por Jose Casal:
-    sectarioLabel.setSelected( p instanceof CultistPlayer );
-        
-    pendingBadConsequenceView.setPendingBadConsequence( p.getPendingBadConsequence() );
-        
-    fillTreasurePanel( visibleTreasuresPanel, playerModel.getVisibleTreasures() );
-    fillTreasurePanel( hiddenTreasuresPanel, playerModel.getHiddenTreasures() );
-       
-    // Buttons.
-    boolean activar = p.getHiddenTreasures().size() > 0 || p.getVisibleTreasures().size() > 0;
-        
-    makeVisibleButton.setEnabled( p.getHiddenTreasures().size() > 0 );
-    discardTreasuresButton.setEnabled( activar );
-    discardAllTreasuresButton.setEnabled( activar );
-        
-    repaint();
-    revalidate();
-	}
     
 	public void disableTreasureButtons() {
 		makeVisibleButton.setEnabled( false );

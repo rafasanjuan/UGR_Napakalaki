@@ -23,6 +23,9 @@ public class CardDealer {
     
     // Metodos
     private void initTreasureCardDeck() {
+        
+        unusedTreasures.add( new Treasure( "El JOKER", 0, TreasureKind.JOKER ) );
+        
                 // 1º TESORO - ¡SÍ MI AMO!
         Treasure tesoro = new Treasure( "¡Sí mi amo!", 4, TreasureKind.HELMET );
         unusedTreasures.add(tesoro);
@@ -348,7 +351,7 @@ public class CardDealer {
     
     public Treasure nextTreasure(){
         Treasure local_treasure = null;
-        if(!unusedTreasures.isEmpty()){
+        if( !unusedTreasures.isEmpty() ) {
            local_treasure = unusedTreasures.get(0);
             usedTreasures.add(local_treasure);
             unusedTreasures.remove(0);
@@ -376,8 +379,6 @@ public class CardDealer {
         return local_monster;
     }
     
-    // ISSUE::Se ha implementado sin especificaciones de que tiene que hacer
-    // seguramente no funcione como es devido.
     public Cultist nextCultist() {
         Cultist local_cultist = null;
         if(!unusedCultists.isEmpty()){

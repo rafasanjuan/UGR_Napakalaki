@@ -12,9 +12,10 @@ public class Player {
     private boolean dead;
     private boolean canISteal;
     private Player enemy;
-    private BadConsequence pendingBadConsequence;
-    private ArrayList<Treasure> visibleTreasures;
-    private ArrayList<Treasure> hiddenTreasures;
+    protected BadConsequence pendingBadConsequence;
+    protected ArrayList<Treasure> visibleTreasures;
+    protected ArrayList<Treasure> hiddenTreasures;
+    protected boolean joker_equipado;
     
     // Constructor
     public Player( String name ) {
@@ -26,6 +27,7 @@ public class Player {
         this.dead = true;
         this.canISteal = true;
         enemy = null;
+        this.joker_equipado = false;
     }
     
     public Player( Player p ) {
@@ -37,6 +39,7 @@ public class Player {
         this.pendingBadConsequence = p.pendingBadConsequence;
         this.visibleTreasures = p.visibleTreasures;
         this.hiddenTreasures = p.hiddenTreasures;
+        this.joker_equipado = p.joker_equipado;
     }
     
     // Metodos
@@ -55,6 +58,31 @@ public class Player {
             combat_level += i.getBonus();
         
         return combat_level;
+    }
+    
+    public boolean getJokerEquipado() {
+        return joker_equipado;
+    }
+    
+    public void useJoker() {
+        if ( joker_equipado )
+        {
+            joker_equipado = false;
+            // Sobreescribimos con una nueva mala consequencia vacia.
+            this.pendingBadConsequence = new NumericBadConsequence();
+            discardJoker();
+        }
+    }
+    
+    protected void discardJoker() {
+        Treasure joker = null;
+        for ( Treasure t : visibleTreasures )
+        {
+            if ( t.getType() == TreasureKind.JOKER )
+                joker = t;
+        }
+        if ( joker != null )
+            discardVisibleTreasure( joker );
     }
     
     private void incrementLevels( int l ) {
@@ -76,7 +104,7 @@ public class Player {
 				}
     }
     
-    private void setPendingBadConsequence( BadConsequence b ) {
+    public void setPendingBadConsequence( BadConsequence b ) {
         pendingBadConsequence = b;  
     }
     
@@ -231,8 +259,11 @@ public class Player {
         if( canMakeTreasureVisible( t ) )
         {
             if( hiddenTreasures.remove( t ) )
-                
-                visibleTreasures.add( t );   
+            {
+                visibleTreasures.add( t );
+                if ( t.getType() == TreasureKind.JOKER )
+                    this.joker_equipado = true;
+            }
         }
     }
     
@@ -241,6 +272,7 @@ public class Player {
         if ( pendingBadConsequence != null )
             pendingBadConsequence.substractVisibleTreasure(t);
         dieIfNoTreasures();
+        CardDealer.getInstance().giveTreasureBack( t );
     }
     
     public void discardHiddenTreasure( Treasure t ) {
@@ -254,6 +286,7 @@ public class Player {
 				
 				// Si el jugador se queda sin tesoros, muere.
         dieIfNoTreasures();
+        CardDealer.getInstance().giveTreasureBack( t );
     }
     
     public boolean validState() {
